@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/chats_body.dart';
 import 'package:flutter/material.dart';
+import '../settings.dart';
 
 User? loggedInUser;
 
@@ -50,30 +52,25 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
           color: Colors.white,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.messenger),
-            label: 'Chats',
-            backgroundColor: Colors.blueGrey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'People',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Calls',
-          ),
-          BottomNavigationBarItem(
-            icon: CircleAvatar(
-              radius: 14.0,
-              backgroundImage: AssetImage('images/pikachu.jpg'),
-            ),
-            label: 'Profile',
-          ),
-        ],
-      ),
+      bottomNavigationBar: BottomNavBar(press: (index) {
+        if (index == 1) {
+          setState(() {
+            Navigator.pushNamed(context, SettingsScreen.id);
+          });
+        } else if (index == 2) {
+          setState(() {
+            Navigator.pushNamed(context, SettingsScreen.id);
+          });
+        } else if (index == 3) {
+          setState(() {
+            Navigator.pushNamed(context, SettingsScreen.id);
+          });
+        } else {
+          setState(() {
+            Navigator.pushNamed(context, SettingsScreen.id);
+          });
+        }
+      }),
     );
   }
 
