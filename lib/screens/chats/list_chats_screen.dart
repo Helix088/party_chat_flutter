@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/chats_body.dart';
+import 'package:flash_chat_flutter/components/chats_display.dart';
 import 'package:flutter/material.dart';
 import '../settings.dart';
 
@@ -44,7 +45,9 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
       body: Body(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {});
+          setState(() {
+            ChatsDisplay.updateData;
+          });
         },
         backgroundColor: Colors.blueGrey,
         child: Icon(

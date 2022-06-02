@@ -46,4 +46,13 @@ class ChatsDisplay extends StatelessWidget {
       },
     );
   }
+
+  void newCard() {
+    _firestore
+        .collection('chats')
+        .add(ChatsCard(
+            chat: '', title: '', lastSent: '', press: Timestamp.now()))
+        .then((value) => print('Added'))
+        .catchError((error) => print('Add failed: $error'));
+  }
 }
