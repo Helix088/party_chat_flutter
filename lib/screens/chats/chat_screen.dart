@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'login_screen.dart';
+import 'list_chats_screen.dart';
+import '../login_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
@@ -51,8 +52,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 Navigator.popAndPushNamed(context, LoginScreen.id);
               }),
         ],
-        title: const Text('⚡️Chat'),
-        backgroundColor: Colors.lightBlueAccent,
+        title: const Text('🎉 Chat'),
+        backgroundColor: Colors.blueGrey,
       ),
       body: SafeArea(
         child: Column(
@@ -109,7 +110,7 @@ class MessageStream extends StatelessWidget {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: Colors.blueGrey,
             ),
           );
         }
@@ -169,7 +170,7 @@ class MessageBubble extends StatelessWidget {
                     topLeft: Radius.circular(30.0),
                     bottomRight: Radius.circular(30.0)),
             elevation: 5.0,
-            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            color: isMe ? Colors.blue : Colors.white,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

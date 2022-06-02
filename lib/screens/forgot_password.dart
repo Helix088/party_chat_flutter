@@ -51,7 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     Icon(
                       Icons.email,
-                      color: Colors.lightBlueAccent,
+                      color: Colors.blueGrey,
                     ),
                   ],
                 ),
@@ -86,15 +86,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       print(e);
                     }
                   },
-                  style:
-                      ElevatedButton.styleFrom(primary: Colors.lightBlueAccent),
+                  style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
                 ),
                 TextButton(
                   child: Text('Log In'),
                   onPressed: () {
                     Navigator.pushNamed(context, LoginScreen.id);
                   },
-                  style: TextButton.styleFrom(primary: Colors.lightBlueAccent),
+                  style: TextButton.styleFrom(primary: Colors.blueGrey),
                 ),
               ],
             ),

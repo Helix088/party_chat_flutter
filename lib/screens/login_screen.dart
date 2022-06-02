@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/rounded_button.dart';
-import 'package:flash_chat_flutter/screens/chat_screen.dart';
 import 'package:flash_chat_flutter/screens/forgot_password.dart';
 import 'package:flash_chat_flutter/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'chats/list_chats_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   try {
                     await _auth.signInWithEmailAndPassword(
                         email: email!, password: password!);
-                    Navigator.pushNamed(context, ChatScreen.id);
+                    Navigator.pushNamed(context, ListChatsScreen.id);
                     setState(() {
                       showSpinner = false;
                     });
@@ -83,7 +84,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 title: 'Log In',
-                color: Colors.lightBlueAccent,
+                color: Colors.blueGrey,
+                textColor: Colors.white,
               ),
               TextButton(
                 child: Text(
@@ -99,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, WelcomeScreen.id);
                 },
-                style: TextButton.styleFrom(primary: Colors.lightBlueAccent),
+                style: TextButton.styleFrom(primary: Colors.blueGrey),
               ),
             ],
           ),

@@ -1,5 +1,5 @@
 import 'package:flash_chat_flutter/constants.dart';
-import 'package:flash_chat_flutter/screens/chat_screen.dart';
+import 'package:flash_chat_flutter/screens/chats/chat_screen.dart';
 import 'package:flutter/material.dart';
 import '../components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,14 +83,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   }
                 },
                 title: 'Register',
-                color: Colors.blueAccent,
+                color: Colors.blueGrey,
+                textColor: Colors.white,
               ),
               TextButton(
                 child: Text('Back to Welcome Screen'),
                 onPressed: () {
                   Navigator.pushNamed(context, WelcomeScreen.id);
                 },
-                style: TextButton.styleFrom(primary: Colors.lightBlueAccent),
+                style: TextButton.styleFrom(primary: Colors.blueGrey),
               ),
             ],
           ),

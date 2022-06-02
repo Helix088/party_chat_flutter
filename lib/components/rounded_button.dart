@@ -6,8 +6,10 @@ class RoundedButton extends StatelessWidget {
     required this.onPressed,
     required this.title,
     required this.color,
+    required this.textColor,
   }) : super(key: key);
 
+  final Color textColor;
   final Color color;
   final String title;
   final void Function()? onPressed;
@@ -27,7 +29,7 @@ class RoundedButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              color: Colors.white,
+              color: textColor,
             ),
           ),
         ),

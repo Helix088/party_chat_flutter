@@ -59,10 +59,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     height: 60.0,
                   ),
                 ),
+                SizedBox(
+                  width: 10.0,
+                ),
                 AnimatedTextKit(
                   animatedTexts: [
                     TypewriterAnimatedText(
-                      'Flash Chat',
+                      'Party Chat',
                       textStyle: TextStyle(
                         fontSize: 45.0,
                         fontWeight: FontWeight.w900,
@@ -82,14 +85,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 Navigator.pushNamed(context, LoginScreen.id);
               },
               title: 'Log In',
-              color: Colors.lightBlueAccent,
+              color: Colors.blueGrey,
+              textColor: Colors.white,
             ),
             RoundedButton(
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.id);
               },
               title: 'Register',
-              color: Colors.blueAccent,
+              color: Colors.blueGrey.shade800,
+              textColor: Colors.white,
             ),
           ],
         ),
