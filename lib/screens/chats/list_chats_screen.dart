@@ -39,10 +39,10 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
     }
   }
 
-  Future<void> newCard() {
+  Future<void> newCard({required String title}) {
     return _firestore
         .collection('chats')
-        .add({'title': '', 'lastSent': FieldValue.serverTimestamp()});
+        .add({'title': title, 'lastSent': FieldValue.serverTimestamp()});
   }
 
   @override
@@ -57,7 +57,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    newCard();
+                    newCard(title: '');
                   },
                   child: Text('SUBMIT'),
                 ),
