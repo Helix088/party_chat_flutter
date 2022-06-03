@@ -25,13 +25,16 @@ class ChatsDisplay extends StatelessWidget {
         for (var chat in chats!) {
           final chatId = chat.reference.id;
           final chatTitle = chat.get('title');
-          final chatDate = chat.get('lastSent');
+          final chatDate = Timestamp.now();
 
           final chatCard = ChatsCard(
             title: chatTitle,
             lastSent: chatDate,
             press: () {
-              Navigator.pushNamed(context, ChatScreen.id);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChatScreen(chatId: chatId)));
             },
             chat: chatId,
           );
@@ -45,14 +48,5 @@ class ChatsDisplay extends StatelessWidget {
         );
       },
     );
-  }
-
-  void newCard() {
-    _firestore
-        .collection('chats')
-        .add(ChatsCard(
-            chat: '', title: '', lastSent: '', press: Timestamp.now()))
-        .then((value) => print('Added'))
-        .catchError((error) => print('Add failed: $error'));
   }
 }

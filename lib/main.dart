@@ -14,11 +14,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const FlashChat());
+  runApp(const PartyChat());
 }
 
-class FlashChat extends StatelessWidget {
-  const FlashChat({Key? key}) : super(key: key);
+class PartyChat extends StatelessWidget {
+  const PartyChat({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class FlashChat extends StatelessWidget {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         RegistrationScreen.id: (context) => RegistrationScreen(),
-        ChatScreen.id: (context) => ChatScreen(),
+        //ChatScreen.id: (context) => ChatScreen(),
         ForgotPasswordScreen.id: (context) => ForgotPasswordScreen(),
         ListChatsScreen.id: (context) => ListChatsScreen(),
         SettingsScreen.id: (context) => SettingsScreen(),

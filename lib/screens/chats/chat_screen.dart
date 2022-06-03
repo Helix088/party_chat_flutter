@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'list_chats_screen.dart';
 import '../login_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({Key? key, required this.chatId}) : super(key: key);
   static const String id = 'chat_screen';
+  final String chatId;
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -33,6 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (user != null) {
         loggedInUser = user;
         print(loggedInUser?.email);
+        print(widget.chatId);
       }
     } catch (e) {
       print(e);
@@ -60,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream(),
+            MessageStream(chatId: widget.chatId),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -79,9 +80,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       messageTextController.clear();
                       _firestore.collection('messages').add({
+                        'chatId': widget.chatId,
                         'text': messageText,
                         'sender': loggedInUser?.email,
-                        'sent': Timestamp.now()
+                        'sent': Timestamp.now(),
                       });
                     },
                     child: const Text(
@@ -100,12 +102,17 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageStream extends StatelessWidget {
-  const MessageStream({Key? key}) : super(key: key);
+  const MessageStream({Key? key, required this.chatId}) : super(key: key);
+  final String chatId;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').orderBy('sent').snapshots(),
+      stream: _firestore
+          .collection('messages')
+          .where('chatId', isEqualTo: chatId)
+          .limit(50)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(

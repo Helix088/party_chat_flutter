@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/chats_body.dart';
-import 'package:flash_chat_flutter/components/chats_display.dart';
 import 'package:flutter/material.dart';
 import '../settings.dart';
 
 User? loggedInUser;
+final _firestore = FirebaseFirestore.instance;
 
 class ListChatsScreen extends StatefulWidget {
   const ListChatsScreen({Key? key}) : super(key: key);
@@ -38,16 +39,36 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
     }
   }
 
+  Future<void> newCard() {
+    return _firestore
+        .collection('chats')
+        .add({'title': '', 'lastSent': FieldValue.serverTimestamp()});
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future titleEntry() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Group Chat Name'),
+              content: TextField(
+                decoration: InputDecoration(hintText: 'Enter Chat Name'),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    newCard();
+                  },
+                  child: Text('SUBMIT'),
+                ),
+              ],
+            ));
     return Scaffold(
       appBar: buildAppBar(),
       body: Body(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            ChatsDisplay.updateData;
-          });
+          titleEntry();
         },
         backgroundColor: Colors.blueGrey,
         child: Icon(
