@@ -25,11 +25,13 @@ class ChatsDisplay extends StatelessWidget {
         for (var chat in chats!) {
           final chatId = chat.reference.id;
           final chatTitle = chat.get('title');
+          final chatUsers = chat.get('users');
           final chatDate = Timestamp.now();
 
           final chatCard = ChatsCard(
             title: chatTitle,
             lastSent: chatDate,
+            users: chatUsers,
             press: () {
               Navigator.push(
                   context,
