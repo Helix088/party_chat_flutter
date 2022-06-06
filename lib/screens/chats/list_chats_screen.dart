@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/chats_body.dart';
+import 'package:flash_chat_flutter/screens/chats/chat_screen.dart';
 import 'package:flutter/material.dart';
 import '../settings.dart';
 
@@ -17,14 +18,17 @@ class ListChatsScreen extends StatefulWidget {
 }
 
 class _ListChatsScreenState extends State<ListChatsScreen> {
+  late TextEditingController controller;
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String? messageText;
+  String? title = '';
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+    controller = TextEditingController();
   }
 
   void getCurrentUser() async {
@@ -39,25 +43,34 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
     }
   }
 
-  Future<void> newCard({required String title}) {
+  Future<void> newCard({title, required List users, lastSent}) {
     return _firestore
         .collection('chats')
-        .add({'title': title, 'lastSent': FieldValue.serverTimestamp()});
+        .add({'title': title, 'lastSent': lastSent, 'users': users});
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Future titleEntry() => showDialog(
+    Future<String?> titleEntry() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
               title: Text('Group Chat Name'),
               content: TextField(
+                autofocus: true,
                 decoration: InputDecoration(hintText: 'Enter Chat Name'),
+                controller: controller,
               ),
               actions: [
                 TextButton(
                   onPressed: () {
-                    newCard(title: '');
+                    newCard(title: title, users: [], lastSent: Timestamp.now());
+                    Navigator.of(context).pop(controller.text);
                   },
                   child: Text('SUBMIT'),
                 ),
@@ -67,8 +80,10 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
       appBar: buildAppBar(),
       body: Body(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          titleEntry();
+        onPressed: () async {
+          final title = await titleEntry();
+          if (title == null || title.isEmpty) return;
+          setState(() => this.title = title);
         },
         backgroundColor: Colors.blueGrey,
         child: Icon(
@@ -77,15 +92,15 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(press: (index) {
-        if (index == 1) {
+        if (index == 0) {
+          setState(() {
+            Navigator.pushNamed(context, ChatScreen.id);
+          });
+        } else if (index == 1) {
           setState(() {
             Navigator.pushNamed(context, SettingsScreen.id);
           });
         } else if (index == 2) {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        } else if (index == 3) {
           setState(() {
             Navigator.pushNamed(context, SettingsScreen.id);
           });

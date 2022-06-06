@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatsCard extends StatelessWidget {
   const ChatsCard({
@@ -8,12 +9,14 @@ class ChatsCard extends StatelessWidget {
     required this.title,
     required this.lastSent,
     required this.press,
+    //required this.text,
   }) : super(key: key);
 
   final String chat;
   final String title;
   final Timestamp lastSent;
   final VoidCallback press;
+  //final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class ChatsCard extends StatelessWidget {
             ),
             Opacity(
               opacity: 0.64,
-              //child: Text(lastSent.toString()),
+              child: Text(DateFormat.yMd().add_jm().format(lastSent.toDate())),
             ),
           ],
         ),

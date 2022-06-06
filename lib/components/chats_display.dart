@@ -25,13 +25,11 @@ class ChatsDisplay extends StatelessWidget {
         for (var chat in chats!) {
           final chatId = chat.reference.id;
           final chatTitle = chat.get('title');
-          final chatUsers = chat.get('users');
-          final chatDate = Timestamp.now();
+          final chatDate = chat.get('lastSent');
 
           final chatCard = ChatsCard(
             title: chatTitle,
             lastSent: chatDate,
-            users: chatUsers,
             press: () {
               Navigator.push(
                   context,
@@ -39,8 +37,12 @@ class ChatsDisplay extends StatelessWidget {
                       builder: (context) => ChatScreen(chatId: chatId)));
             },
             chat: chatId,
+            //text: '',
           );
           chatsCard.add(chatCard);
+          if (chatDate == null) {
+            print(Timestamp.now());
+          }
         }
         return Expanded(
           child: ListView(
@@ -52,3 +54,26 @@ class ChatsDisplay extends StatelessWidget {
     );
   }
 }
+
+
+
+
+// final chats = snapshot.data?.docs.reversed;
+//         List<ChatsCard> chatsCard = [];
+//         for (var chat in chats!) {
+//           final lastMessage = chat.get('text');
+
+//           final chatCard = ChatsCard(
+//             text: lastMessage,
+//             press: () {
+//               Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                       builder: (context) => ChatScreen(chatId: chatId)));
+//             },
+//             chat: chatId,
+//             lastSent: Timestamp.now(),
+//             title: '',
+//           );
+//           chatsCard.add(chatCard);
+//         }
