@@ -28,7 +28,9 @@ class PartyChat extends StatelessWidget {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         RegistrationScreen.id: (context) => RegistrationScreen(),
-        //ChatScreen.id: (context) => ChatScreen(),
+        ChatScreen.id: (context) => ChatScreen(
+              chatId: ChatScreen.id,
+            ),
         ForgotPasswordScreen.id: (context) => ForgotPasswordScreen(),
         ListChatsScreen.id: (context) => ListChatsScreen(),
         SettingsScreen.id: (context) => SettingsScreen(),

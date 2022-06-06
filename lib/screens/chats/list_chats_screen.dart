@@ -43,10 +43,10 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
     }
   }
 
-  Future<void> newCard({title, required List users, lastSent}) {
+  Future<void> newCard({required title, required users}) {
     return _firestore
         .collection('chats')
-        .add({'title': title, 'lastSent': lastSent, 'users': users});
+        .add({'title': title, 'lastSent': Timestamp.now(), 'users': users});
   }
 
   @override
@@ -69,7 +69,6 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    newCard(title: title, users: [], lastSent: Timestamp.now());
                     Navigator.of(context).pop(controller.text);
                   },
                   child: Text('SUBMIT'),
@@ -83,7 +82,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
         onPressed: () async {
           final title = await titleEntry();
           if (title == null || title.isEmpty) return;
-          setState(() => this.title = title);
+          newCard(title: title, users: []);
         },
         backgroundColor: Colors.blueGrey,
         child: Icon(
@@ -94,7 +93,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
       bottomNavigationBar: BottomNavBar(press: (index) {
         if (index == 0) {
           setState(() {
-            Navigator.pushNamed(context, ChatScreen.id);
+            Navigator.pushNamed(context, ListChatsScreen.id);
           });
         } else if (index == 1) {
           setState(() {

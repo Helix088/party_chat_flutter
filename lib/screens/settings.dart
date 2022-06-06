@@ -1,3 +1,4 @@
+import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 
@@ -22,15 +23,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavBar(press: (index) {
-        if (index == 1) {
+        if (index == 0) {
+          setState(() {
+            Navigator.pushNamed(context, ListChatsScreen.id);
+          });
+        } else if (index == 1) {
           setState(() {
             Navigator.pushNamed(context, SettingsScreen.id);
           });
         } else if (index == 2) {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        } else if (index == 3) {
           setState(() {
             Navigator.pushNamed(context, SettingsScreen.id);
           });

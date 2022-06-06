@@ -42,6 +42,24 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _showSimpleDialog() async {
+      await showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              title: const Text('Add User To Chat'),
+              children: <Widget>[
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('User'),
+                ),
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -88,6 +106,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                     child: const Text(
                       'Send',
+                      style: kSendButtonTextStyle,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: _showSimpleDialog,
+                    child: const Text(
+                      'Add User',
                       style: kSendButtonTextStyle,
                     ),
                   ),
