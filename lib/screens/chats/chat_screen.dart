@@ -8,9 +8,11 @@ final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key, required this.chatId}) : super(key: key);
+  const ChatScreen({Key? key, required this.chatId, required this.users})
+      : super(key: key);
   static const String id = 'chat_screen';
   final String chatId;
+  final List users;
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -52,6 +54,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 SimpleDialogOption(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    messageTextController.clear();
+                    _firestore.collection('chats').add({
+                      'users': users,
+                    });
                   },
                   child: const Text('User'),
                 ),

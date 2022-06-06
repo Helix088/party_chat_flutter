@@ -26,6 +26,7 @@ class ChatsDisplay extends StatelessWidget {
           final chatId = chat.reference.id;
           final chatTitle = chat.get('title');
           final chatDate = chat.get('lastSent');
+          final chatUsers = chat.get('users');
 
           final chatCard = ChatsCard(
             title: chatTitle,
@@ -34,9 +35,13 @@ class ChatsDisplay extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChatScreen(chatId: chatId)));
+                      builder: (context) => ChatScreen(
+                            chatId: chatId,
+                            users: chatUsers,
+                          )));
             },
             chat: chatId,
+            users: chatUsers,
             //text: '',
           );
           chatsCard.add(chatCard);
