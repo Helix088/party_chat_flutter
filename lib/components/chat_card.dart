@@ -8,6 +8,7 @@ class ChatsCard extends StatelessWidget {
     required this.chat,
     required this.title,
     required this.lastSent,
+    required this.users,
     required this.press,
     //required this.text,
   }) : super(key: key);
@@ -15,6 +16,7 @@ class ChatsCard extends StatelessWidget {
   final String chat;
   final String title;
   final Timestamp lastSent;
+  final List users;
   final VoidCallback press;
   //final String text;
 
