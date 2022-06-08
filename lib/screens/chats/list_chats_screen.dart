@@ -23,6 +23,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
   final _auth = FirebaseAuth.instance;
   String? messageText;
   String? title = '';
+  List? users;
 
   @override
   void initState() {
@@ -82,7 +83,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
         onPressed: () async {
           final title = await titleEntry();
           if (title == null || title.isEmpty) return;
-          newCard(title: title, users: []);
+          newCard(title: title, users: users);
         },
         backgroundColor: Colors.blueGrey,
         child: Icon(

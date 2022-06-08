@@ -8,11 +8,9 @@ final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key, required this.chatId, required this.users})
-      : super(key: key);
+  const ChatScreen({Key? key, required this.chatId}) : super(key: key);
   static const String id = 'chat_screen';
   final String chatId;
-  final List users;
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -22,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String? messageText;
+  List? users;
 
   @override
   void initState() {
@@ -36,35 +35,34 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
         print(loggedInUser?.email);
         print(widget.chatId);
+        print(users);
       }
     } catch (e) {
       print(e);
     }
   }
 
+  Future<DocumentReference<Map<String, dynamic>>> newUser({required users}) {
+    return _firestore.collection('chats').add({'users': users});
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> _showSimpleDialog() async {
-      await showDialog<void>(
+    Future<List?> addNewUser() => showDialog<List>(
           context: context,
-          builder: (BuildContext context) {
-            return SimpleDialog(
-              title: const Text('Add User To Chat'),
-              children: <Widget>[
-                SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    messageTextController.clear();
-                    _firestore.collection('chats').add({
-                      'users': users,
-                    });
-                  },
-                  child: const Text('User'),
-                ),
-              ],
-            );
-          });
-    }
+          builder: (context) => SimpleDialog(
+            title: const Text('Add User To Chat'),
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  messageTextController.clear();
+                },
+                child: Row(),
+              ),
+            ],
+          ),
+        );
 
     return Scaffold(
       appBar: AppBar(
@@ -116,7 +114,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: _showSimpleDialog,
+                    onPressed: () {
+                      addNewUser();
+                    },
                     child: const Text(
                       'Add User',
                       style: kSendButtonTextStyle,

@@ -35,10 +35,7 @@ class ChatsDisplay extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChatScreen(
-                            chatId: chatId,
-                            users: chatUsers,
-                          )));
+                      builder: (context) => ChatScreen(chatId: chatId)));
             },
             chat: chatId,
             users: chatUsers,
