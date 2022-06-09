@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/chats_body.dart';
-import 'package:flash_chat_flutter/screens/chats/chat_screen.dart';
 import 'package:flutter/material.dart';
 import '../settings.dart';
 
@@ -45,9 +44,11 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
   }
 
   Future<void> newCard({required title, required users}) {
-    return _firestore
-        .collection('chats')
-        .add({'title': title, 'lastSent': Timestamp.now(), 'users': users});
+    return _firestore.collection('chats').add({
+      'title': title,
+      'lastSent': Timestamp.now(),
+      'users': [loggedInUser?.email]
+    });
   }
 
   @override

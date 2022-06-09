@@ -12,8 +12,14 @@ class ChatsDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (loggedInUser?.email == null) {
+      return Text('users');
+    }
+    ;
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('chats').orderBy('lastSent').snapshots(),
+      stream: _firestore
+          .collection('chats')
+          .where('users', arrayContainsAny: [loggedInUser?.email]).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -35,7 +41,8 @@ class ChatsDisplay extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChatScreen(chatId: chatId)));
+                      builder: (context) =>
+                          ChatScreen(chatId: chatId, users: chatUsers)));
             },
             chat: chatId,
             users: chatUsers,

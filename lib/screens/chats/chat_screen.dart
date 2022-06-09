@@ -3,29 +3,33 @@ import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../login_screen.dart';
+import 'package:flash_chat_flutter/components/message_stream.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key, required this.chatId}) : super(key: key);
+  const ChatScreen({Key? key, required this.chatId, required this.users})
+      : super(key: key);
   static const String id = 'chat_screen';
   final String chatId;
+  final List users;
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  late TextEditingController controller;
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String? messageText;
-  List? users;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+    controller = TextEditingController();
   }
 
   void getCurrentUser() async {
@@ -35,35 +39,40 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
         print(loggedInUser?.email);
         print(widget.chatId);
-        print(users);
+        print(widget.users);
       }
     } catch (e) {
       print(e);
     }
   }
 
-  Future<DocumentReference<Map<String, dynamic>>> newUser({required users}) {
-    return _firestore.collection('chats').add({'users': users});
+  Future<void> addUser({required users}) {
+    final db = _firestore.collection('chats').doc(widget.chatId);
+    return db.update({
+      'users': FieldValue.arrayUnion([users])
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Future<List?> addNewUser() => showDialog<List>(
-          context: context,
-          builder: (context) => SimpleDialog(
-            title: const Text('Add User To Chat'),
-            children: <Widget>[
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  messageTextController.clear();
-                },
-                child: Row(),
+    Future<String?> addNewUsers() => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Add Users to Chat'),
+              content: TextField(
+                autofocus: true,
+                decoration: InputDecoration(hintText: 'Enter User Email'),
+                controller: controller,
               ),
-            ],
-          ),
-        );
-
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text);
+                  },
+                  child: Text('SUBMIT'),
+                ),
+              ],
+            ));
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -114,10 +123,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      addNewUser();
+                    onPressed: () async {
+                      final newUser = await addNewUsers();
+                      if (newUser == null || newUser.isEmpty) return;
+                      addUser(users: newUser);
                     },
-                    child: const Text(
+                    child: Text(
                       'Add User',
                       style: kSendButtonTextStyle,
                     ),
@@ -127,104 +138,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MessageStream extends StatelessWidget {
-  const MessageStream({Key? key, required this.chatId}) : super(key: key);
-  final String chatId;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore
-          .collection('messages')
-          .where('chatId', isEqualTo: chatId)
-          .limit(50)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.blueGrey,
-            ),
-          );
-        }
-        final messages = snapshot.data?.docs.reversed;
-        List<MessageBubble> messageBubbles = [];
-        for (var message in messages!) {
-          final messageText = message.get('text');
-          final messageSender = message.get('sender');
-          final currentUser = loggedInUser?.email;
-
-          if (currentUser == messageSender) {}
-
-          final messageBubble = MessageBubble(
-            sender: messageSender,
-            text: messageText,
-            isMe: currentUser == messageSender,
-          );
-          messageBubbles.add(messageBubble);
-        }
-        return Expanded(
-          child: ListView(
-            reverse: true,
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-            children: messageBubbles,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  const MessageBubble(
-      {Key? key, required this.sender, required this.text, required this.isMe})
-      : super(key: key);
-
-  final String sender;
-  final String text;
-  final bool isMe;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Material(
-            borderRadius: isMe
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                    bottomLeft: Radius.circular(30.0))
-                : BorderRadius.only(
-                    topRight: Radius.circular(30.0),
-                    topLeft: Radius.circular(30.0),
-                    bottomRight: Radius.circular(30.0)),
-            elevation: 5.0,
-            color: isMe ? Colors.blue : Colors.white,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              child: Text(
-                '$text',
-                style: isMe
-                    ? TextStyle(color: Colors.white, fontSize: 15.0)
-                    : TextStyle(color: Colors.black, fontSize: 15.0),
-              ),
-            ),
-          ),
-          Text(
-            sender,
-            style: TextStyle(fontSize: 12.0, color: Colors.black54),
-          ),
-        ],
       ),
     );
   }

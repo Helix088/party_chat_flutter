@@ -68,7 +68,7 @@ class ChatsCard extends StatelessWidget {
                     Opacity(
                       opacity: 0.64,
                       child: Text(
-                        title,
+                        users.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
