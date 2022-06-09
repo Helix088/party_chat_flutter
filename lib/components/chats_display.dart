@@ -12,10 +12,6 @@ class ChatsDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (loggedInUser?.email == null) {
-      return Text('users');
-    }
-    ;
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('chats')
