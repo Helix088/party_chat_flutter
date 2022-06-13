@@ -6,16 +6,14 @@ import 'package:flash_chat_flutter/screens/chats/chat_screen.dart';
 final _firestore = FirebaseFirestore.instance;
 
 class ChatsDisplay extends StatelessWidget {
-  const ChatsDisplay({
-    Key? key,
-  }) : super(key: key);
+  const ChatsDisplay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('chats')
-          .where('users', arrayContainsAny: [loggedInUser?.email]).snapshots(),
+          .where('users', arrayContains: [loggedInUser]).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(

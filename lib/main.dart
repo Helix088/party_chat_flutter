@@ -1,7 +1,9 @@
+import 'package:flash_chat_flutter/components/protected_route.dart';
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flash_chat_flutter/screens/forgot_password.dart';
 import 'package:flash_chat_flutter/screens/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';
@@ -33,9 +35,12 @@ class PartyChat extends StatelessWidget {
               users: [],
             ),
         ForgotPasswordScreen.id: (context) => ForgotPasswordScreen(),
-        ListChatsScreen.id: (context) => ListChatsScreen(),
-        SettingsScreen.id: (context) => SettingsScreen(),
+        ListChatsScreen.id: (context) => ProtectedRoute(
+              screen: ListChatsScreen(),
+            ),
+        SettingsScreen.id: (context) => SettingsScreen()
       },
+      builder: EasyLoading.init(),
     );
   }
 }
