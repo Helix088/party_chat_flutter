@@ -22,14 +22,13 @@ class _ChatsDisplayState extends State<ChatsDisplay> {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('chats')
-          .where('users', arrayContains: [currentUser]).snapshots(),
+          .where('users', arrayContainsAny: [currentUser?.email]).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(backgroundColor: Colors.blueGrey),
           );
         }
-        print(loggedInUser);
         final chats = snapshot.data?.docs.reversed;
         List<ChatsCard> chatsCard = [];
         for (var chat in chats!) {
