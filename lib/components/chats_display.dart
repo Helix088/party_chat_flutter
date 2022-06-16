@@ -16,9 +16,6 @@ class _ChatsDisplayState extends State<ChatsDisplay> {
   @override
   Widget build(BuildContext context) {
     var currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      print(currentUser.uid);
-    }
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('chats')

@@ -32,7 +32,6 @@ class MessageStream extends StatelessWidget {
           final messageSender = message.get('sender');
           final currentUser = loggedInUser?.email;
           final dateTime = message.get('sent');
-          print(dateTime);
 
           if (currentUser == messageSender) {}
 
@@ -43,6 +42,7 @@ class MessageStream extends StatelessWidget {
             sent: dateTime,
           );
           messageBubbles.add(messageBubble);
+          messageBubbles.sort(((a, b) => b.sent.compareTo(a.sent)));
         }
         return Expanded(
           child: ListView(

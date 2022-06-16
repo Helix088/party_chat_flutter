@@ -42,13 +42,6 @@ class ChatsCard extends StatelessWidget {
                     child: Container(
                       height: 16.0,
                       width: 16.0,
-                      decoration: BoxDecoration(
-                        color: Colors.greenAccent.shade400,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            width: 3.0),
-                      ),
                     ),
                   )
               ],
