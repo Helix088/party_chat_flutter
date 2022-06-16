@@ -37,9 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
       final user = await _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
-        print(loggedInUser?.email);
-        print(widget.chatId);
-        print(widget.users);
       }
     } catch (e) {
       print(e);
@@ -80,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                _auth.signOut();
+                // _auth.signOut();
                 Navigator.popAndPushNamed(context, LoginScreen.id);
               }),
         ],

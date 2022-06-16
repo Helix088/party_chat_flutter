@@ -1,5 +1,5 @@
 import 'package:flash_chat_flutter/constants.dart';
-import 'package:flash_chat_flutter/screens/chats/chat_screen.dart';
+import 'package:flash_chat_flutter/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +35,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   tag: 'logo',
                   child: Container(
                     height: 200.0,
-                    child: Image.asset('images/logo.png'),
+                    child: Image.asset('assets/images/logo.png'),
                   ),
                 ),
               ),
@@ -74,7 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   try {
                     await _auth.createUserWithEmailAndPassword(
                         email: email!, password: password!);
-                    Navigator.pushNamed(context, ChatScreen.id);
+                    Navigator.pushNamed(context, LoginScreen.id);
                     setState(() {
                       showSpinner = false;
                     });

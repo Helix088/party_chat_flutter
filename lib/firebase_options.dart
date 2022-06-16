@@ -18,15 +18,15 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return webOptions;
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return androidOptions;
+        return android;
       case TargetPlatform.iOS:
-        return iosOptions;
+        return ios;
       case TargetPlatform.macOS:
-        return macosOptions;
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,4 +43,44 @@ class DefaultFirebaseOptions {
         );
     }
   }
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: webOptions,
+    appId: '1:195560521523:web:5796f1499756ddfd35c846',
+    messagingSenderId: '195560521523',
+    projectId: 'flash-chat-54772',
+    authDomain: 'flash-chat-54772.firebaseapp.com',
+    storageBucket: 'flash-chat-54772.appspot.com',
+    measurementId: 'G-C0Y6TR8MQV',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: androidOptions,
+    appId: '1:195560521523:android:5ebd781a06e85b7135c846',
+    messagingSenderId: '195560521523',
+    projectId: 'flash-chat-54772',
+    storageBucket: 'flash-chat-54772.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: iosOptions,
+    appId: '1:195560521523:ios:48816abb4e0946e035c846',
+    messagingSenderId: '195560521523',
+    projectId: 'flash-chat-54772',
+    storageBucket: 'flash-chat-54772.appspot.com',
+    iosClientId:
+        '195560521523-3va38bg7r2f638lur7r4gbsod053nhr6.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flashChatFlutter',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: macosOptions,
+    appId: '1:195560521523:ios:48816abb4e0946e035c846',
+    messagingSenderId: '195560521523',
+    projectId: 'flash-chat-54772',
+    storageBucket: 'flash-chat-54772.appspot.com',
+    iosClientId:
+        '195560521523-3va38bg7r2f638lur7r4gbsod053nhr6.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flashChatFlutter',
+  );
 }

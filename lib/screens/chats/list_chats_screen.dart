@@ -4,6 +4,7 @@ import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/chats_body.dart';
 import 'package:flutter/material.dart';
 import '../settings.dart';
+import '../welcome_screen.dart';
 
 User? loggedInUser;
 final _firestore = FirebaseFirestore.instance;
@@ -121,8 +122,11 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
       title: Text('Chats'),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.search),
+          onPressed: () {
+            _auth.signOut();
+            Navigator.pushNamed(context, WelcomeScreen.id);
+          },
+          icon: Icon(Icons.logout),
         ),
       ],
       elevation: 0,

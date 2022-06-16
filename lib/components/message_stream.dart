@@ -25,12 +25,14 @@ class MessageStream extends StatelessWidget {
             ),
           );
         }
-        final messages = snapshot.data?.docs.reversed;
+        final messages = snapshot.data?.docs;
         List<MessageBubble> messageBubbles = [];
         for (var message in messages!) {
           final messageText = message.get('text');
           final messageSender = message.get('sender');
           final currentUser = loggedInUser?.email;
+          final dateTime = message.get('sent');
+          print(dateTime);
 
           if (currentUser == messageSender) {}
 
@@ -38,6 +40,7 @@ class MessageStream extends StatelessWidget {
             sender: messageSender,
             text: messageText,
             isMe: currentUser == messageSender,
+            sent: dateTime,
           );
           messageBubbles.add(messageBubble);
         }

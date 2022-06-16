@@ -1,13 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble(
-      {Key? key, required this.sender, required this.text, required this.isMe})
+      {Key? key,
+      required this.sender,
+      required this.text,
+      required this.isMe,
+      required this.sent})
       : super(key: key);
 
   final String sender;
   final String text;
   final bool isMe;
+  final Timestamp sent;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +49,10 @@ class MessageBubble extends StatelessWidget {
           ),
           Text(
             sender,
+            style: TextStyle(fontSize: 12.0, color: Colors.black54),
+          ),
+          Text(
+            DateFormat.yMd().add_jm().format(sent.toDate()),
             style: TextStyle(fontSize: 12.0, color: Colors.black54),
           ),
         ],
