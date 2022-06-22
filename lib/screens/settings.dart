@@ -1,6 +1,7 @@
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -15,10 +16,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Text('Test'),
+      body: SettingsList(
+        sections: [
+          SettingsSection(
+            title: Text('Common'),
+            tiles: <SettingsTile>[
+              SettingsTile.navigation(
+                leading: Icon(Icons.language),
+                title: Text('Language'),
+                value: Text('English'),
+              ),
+              SettingsTile.switchTile(
+                onToggle: (value) {},
+                initialValue: true,
+                leading: Icon(Icons.dark_mode),
+                title: Text('Dark Theme'),
+              ),
+              SettingsTile.switchTile(
+                onToggle: (value) {},
+                initialValue: true,
+                leading: Icon(Icons.format_paint),
+                title: Text('Enable custom theme'),
+              ),
+            ],
           ),
         ],
       ),
