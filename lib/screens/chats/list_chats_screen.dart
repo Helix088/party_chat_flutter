@@ -122,9 +122,9 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
       title: Text('Chats'),
       actions: [
         IconButton(
-          onPressed: () {
+          onPressed: () async {
             _auth.signOut();
-            Navigator.popAndPushNamed(context, WelcomeScreen.id);
+            await Navigator.popAndPushNamed(context, WelcomeScreen.id);
           },
           icon: Icon(Icons.logout),
         ),

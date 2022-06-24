@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
@@ -12,6 +13,88 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  late TextEditingController controller;
+  final messageTextController = TextEditingController();
+  bool _notifications = false;
+  bool _darkMode = false;
+  final _auth = FirebaseAuth.instance;
+  final _user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+    controller = TextEditingController();
+  }
+
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        // print(loggedInUser?.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String?> changeEmail() {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Update Email'),
+        content: TextField(
+          autofocus: true,
+          decoration: InputDecoration(hintText: 'Please enter a new email'),
+          controller: controller,
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final newEmail = await changeEmail();
+              if (newEmail == null || newEmail.isEmpty) return;
+              _user?.updateEmail(newEmail);
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<String?> changePassword() {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Update Password'),
+        content: TextField(
+          autofocus: true,
+          decoration: InputDecoration(hintText: 'Please enter a new password'),
+          controller: controller,
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final newPassword = await changePassword();
+              if (newPassword == null || newPassword.isEmpty) return;
+              _user?.updatePassword(newPassword);
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +107,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(10.0)),
               child: Column(
                 children: [
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.all(8.0),
+                    title: Text(
+                      'Notifications',
+                      style: TextStyle(color: Colors.blueGrey[600]),
+                    ),
+                    value: _notifications,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _notifications = value;
+                      });
+                    },
+                    activeColor: Colors.blueGrey[800],
+                    secondary: Icon(
+                      Icons.notifications,
+                      color: Colors.blueGrey[600],
+                    ),
+                  ),
                   ListTile(
                     onTap: () {
-                      setState(() {});
+                      setState(() {
+                        changeEmail();
+                      });
                     },
                     title: Text(
                       'Email',
@@ -43,7 +146,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   ListTile(
                     onTap: () {
-                      setState(() {});
+                      setState(() {
+                        changePassword();
+                      });
                     },
                     title: Text(
                       'Change Password',
@@ -66,6 +171,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(10.0)),
               child: Column(
                 children: [
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.all(8.0),
+                    title: Text(
+                      'Dark Theme',
+                      style: TextStyle(color: Colors.blueGrey[600]),
+                    ),
+                    value: _darkMode,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _darkMode = value;
+                      });
+                    },
+                    activeColor: Colors.blueGrey[800],
+                    secondary: Icon(
+                      Icons.dark_mode,
+                      color: Colors.blueGrey[600],
+                    ),
+                  ),
                   ListTile(
                     onTap: () {
                       setState(() {});
@@ -117,7 +240,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
-                      Icons.abc,
+                      FontAwesomeIcons.circleInfo,
                       color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
@@ -130,11 +253,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       setState(() {});
                     },
                     title: Text(
-                      'Location',
+                      'Help',
                       style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
-                      Icons.location_on,
+                      FontAwesomeIcons.circleQuestion,
                       color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
@@ -144,13 +267,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ],
               ),
-            ),
-            SwitchListTile(
-              contentPadding: const EdgeInsets.all(8.0),
-              title: Text('Change Theme'),
-              value: true,
-              onChanged: (value) {},
-              activeColor: Colors.blueGrey[800],
             ),
           ],
         ),
