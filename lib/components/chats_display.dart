@@ -63,26 +63,3 @@ class _ChatsDisplayState extends State<ChatsDisplay> {
     );
   }
 }
-
-
-
-
-// final chats = snapshot.data?.docs.reversed;
-//         List<ChatsCard> chatsCard = [];
-//         for (var chat in chats!) {
-//           final lastMessage = chat.get('text');
-
-//           final chatCard = ChatsCard(
-//             text: lastMessage,
-//             press: () {
-//               Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                       builder: (context) => ChatScreen(chatId: chatId)));
-//             },
-//             chat: chatId,
-//             lastSent: Timestamp.now(),
-//             title: '',
-//           );
-//           chatsCard.add(chatCard);
-//         }

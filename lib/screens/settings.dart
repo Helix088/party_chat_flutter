@@ -32,7 +32,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final user = await _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
-        // print(loggedInUser?.email);
       }
     } catch (e) {
       print(e);
@@ -44,11 +43,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text('Update Email'),
-        content: TextField(
-          autofocus: true,
-          decoration: InputDecoration(hintText: 'Please enter a new email'),
-          controller: controller,
-        ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -71,22 +65,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text('Update Password'),
-        content: TextField(
-          autofocus: true,
-          decoration: InputDecoration(hintText: 'Please enter a new password'),
-          controller: controller,
-        ),
+        title: Text('Reset Password?'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () async {
-              final newPassword = await changePassword();
-              if (newPassword == null || newPassword.isEmpty) return;
-              _user?.updatePassword(newPassword);
+            onPressed: () {
+              _auth.sendPasswordResetEmail(email: (_user!.email).toString());
+              Navigator.pop(context, 'Submit');
             },
             child: const Text('Submit'),
           ),
