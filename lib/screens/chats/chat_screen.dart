@@ -24,7 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String? messageText;
-
   @override
   void initState() {
     super.initState();
@@ -81,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Navigator.popAndPushNamed(context, LoginScreen.id);
               }),
         ],
-        title: const Text('🎉 Chat'),
+        title: Text(_firestore.collection('chats').doc('title').toString()),
         backgroundColor: Colors.blueGrey,
       ),
       body: SafeArea(
