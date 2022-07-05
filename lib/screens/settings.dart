@@ -3,6 +3,8 @@ import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:flash_chat_flutter/components/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -83,8 +85,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Future<String?> changeLanguage() {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Select Language'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              _auth.sendPasswordResetEmail(email: (_user!.email).toString());
+              Navigator.pop(context, 'Submit');
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: buildAppBar(),
       body: SingleChildScrollView(
@@ -165,11 +190,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       'Dark Theme',
                       style: TextStyle(color: Colors.blueGrey[600]),
                     ),
-                    value: _darkMode,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _darkMode = value;
-                      });
+                    value: themeProvider.isDarkMode,
+                    onChanged: (value) {
+                      final provider = themeProvider;
+                      provider.toggleTheme(value);
                     },
                     activeColor: Colors.blueGrey[800],
                     secondary: Icon(
