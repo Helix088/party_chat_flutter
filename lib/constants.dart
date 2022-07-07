@@ -8,8 +8,8 @@ const kMessageTextFieldDecoration = InputDecoration(
   filled: true,
   fillColor: Colors.white,
   border: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-      borderSide: BorderSide(color: Colors.blueGrey)),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
 );
 
 const kTextFieldDecoration = InputDecoration(
