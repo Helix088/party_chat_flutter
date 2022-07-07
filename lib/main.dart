@@ -1,8 +1,10 @@
+import 'package:camera/camera.dart';
 import 'package:flash_chat_flutter/components/protected_route.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flash_chat_flutter/screens/forgot_password.dart';
 import 'package:flash_chat_flutter/screens/settings.dart';
+import 'package:flash_chat_flutter/screens/take_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +48,13 @@ class PartyChat extends StatelessWidget {
               ListChatsScreen.id: (context) => ProtectedRoute(
                     screen: ListChatsScreen(),
                   ),
-              SettingsScreen.id: (context) => SettingsScreen()
+              SettingsScreen.id: (context) => SettingsScreen(),
+              TakePictureScreen.id: (context) => TakePictureScreen(
+                    camera: CameraDescription(
+                        lensDirection: CameraLensDirection.back,
+                        name: 'Back Camera',
+                        sensorOrientation: 0),
+                  )
             },
             builder: EasyLoading.init(),
           );

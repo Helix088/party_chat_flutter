@@ -3,6 +3,7 @@ import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';
 
@@ -120,11 +121,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(10.0)),
               child: Column(
                 children: [
+                  // ListTile(
+                  //   onTap: () async {
+                  //     await ImagePicker.pickImage(source: ImageSource.gallery);
+                  //   },
+                  //   title: Text(
+                  //     'Photo',
+                  //   ),
+                  //   leading: CircleAvatar(
+                  //     foregroundImage: ,
+                  //   ),
+                  //   trailing: Icon(
+                  //     Icons.edit,
+                  //   ),
+                  // ),
                   SwitchListTile(
                     contentPadding: EdgeInsets.all(8.0),
                     title: Text(
                       'Notifications',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     value: _notifications,
                     onChanged: (bool value) {
@@ -132,10 +146,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _notifications = value;
                       });
                     },
-                    activeColor: Colors.blueGrey[800],
+                    activeColor: Colors.blueGrey[600],
                     secondary: Icon(
                       Icons.notifications,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                   ListTile(
@@ -146,15 +159,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     title: Text(
                       'Email',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
                       Icons.email,
-                      color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
                       Icons.edit,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                   ListTile(
@@ -165,15 +175,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     title: Text(
                       'Change Password',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
                       Icons.lock_person_rounded,
-                      color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
                       Icons.edit,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                 ],
@@ -188,17 +195,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     contentPadding: EdgeInsets.all(8.0),
                     title: Text(
                       'Dark Theme',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     value: themeProvider.isDarkMode,
                     onChanged: (value) {
-                      final provider = themeProvider;
-                      provider.toggleTheme(value);
+                      setState(() {
+                        final provider = themeProvider;
+                        provider.toggleTheme(value);
+                      });
                     },
-                    activeColor: Colors.blueGrey[800],
+                    activeColor: Colors.blueGrey[600],
                     secondary: Icon(
                       Icons.dark_mode,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                   ListTile(
@@ -207,15 +214,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     title: Text(
                       'Language',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
                       FontAwesomeIcons.language,
-                      color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                   ListTile(
@@ -224,15 +228,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     title: Text(
                       'Location',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
                       Icons.location_on,
-                      color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                 ],
@@ -249,15 +250,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     title: Text(
                       'About Us',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
                       FontAwesomeIcons.circleInfo,
-                      color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                   ListTile(
@@ -266,15 +264,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     title: Text(
                       'Help',
-                      style: TextStyle(color: Colors.blueGrey[600]),
                     ),
                     leading: Icon(
                       FontAwesomeIcons.circleQuestion,
-                      color: Colors.blueGrey[600],
                     ),
                     trailing: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: Colors.blueGrey[600],
                     ),
                   ),
                 ],
