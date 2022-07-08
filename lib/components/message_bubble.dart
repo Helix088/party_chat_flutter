@@ -49,11 +49,15 @@ class MessageBubble extends StatelessWidget {
           ),
           Text(
             sender,
-            style: TextStyle(fontSize: 12.0, color: Colors.black54),
+            style: TextStyle(
+              fontSize: 12.0,
+            ),
           ),
           Text(
             DateFormat.yMd().add_jm().format(sent.toDate()),
-            style: TextStyle(fontSize: 12.0, color: Colors.black54),
+            style: TextStyle(
+              fontSize: 12.0,
+            ),
           ),
         ],
       ),

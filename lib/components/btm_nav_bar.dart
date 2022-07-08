@@ -4,30 +4,36 @@ class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
     Key? key,
     required this.press,
+    required this.currentIndex,
   }) : super(key: key);
 
   final Function(int)? press;
-  final int? _currentIndex = 0;
+  final int? currentIndex;
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _currentIndex!,
+      currentIndex: currentIndex!,
+      backgroundColor: Colors.blueGrey,
       onTap: press,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.messenger),
+          icon: Icon(
+            Icons.messenger,
+          ),
           label: 'Chats',
-          backgroundColor: Colors.blueGrey,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.people),
+          icon: Icon(
+            Icons.people,
+          ),
           label: 'People',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.call),
-          label: 'Calls',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.call),
+        //   label: 'Calls',
+        //   backgroundColor: Colors.blueGrey,
+        // ),
         BottomNavigationBarItem(
           icon: CircleAvatar(
             radius: 14.0,
@@ -36,6 +42,8 @@ class BottomNavBar extends StatelessWidget {
           label: 'Profile',
         ),
       ],
+      selectedItemColor: Colors.black87,
+      unselectedItemColor: Colors.white,
     );
   }
 }

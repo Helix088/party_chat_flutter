@@ -3,9 +3,11 @@ import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';
+
+import 'people_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -19,26 +21,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late TextEditingController controller;
   final messageTextController = TextEditingController();
   bool _notifications = false;
-  bool _darkMode = false;
   final _auth = FirebaseAuth.instance;
   final _user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
     controller = TextEditingController();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = await _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   Future<String?> changeEmail() {
@@ -278,25 +267,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(press: (index) {
-        if (index == 0) {
-          setState(() {
-            Navigator.pushNamed(context, ListChatsScreen.id);
-          });
-        } else if (index == 1) {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        } else if (index == 2) {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        } else {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        }
-      }),
+      bottomNavigationBar: BottomNavBar(
+        press: (index) {
+          if (index == 0) {
+            setState(() {
+              Navigator.pushNamed(context, ListChatsScreen.id);
+            });
+          } else if (index == 1) {
+            setState(() {
+              Navigator.pushNamed(context, PeopleScreen.id);
+            });
+          } else if (index == 2) {
+            setState(() {
+              Navigator.pushNamed(context, SettingsScreen.id);
+            });
+          }
+          // } else if (index == 2) {
+          //   setState(() {
+          //     Navigator.pushNamed(context, SettingsScreen.id);
+          //   });
+        },
+        currentIndex: 2,
+      ),
     );
   }
 }

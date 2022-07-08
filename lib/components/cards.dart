@@ -80,3 +80,63 @@ class ChatsCard extends StatelessWidget {
     );
   }
 }
+
+class UsersCard extends StatelessWidget {
+  const UsersCard({
+    Key? key,
+    required this.user,
+    required this.press,
+    //required this.text,
+  }) : super(key: key);
+
+  final List user;
+  final VoidCallback press;
+  //final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: press,
+      child: Padding(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0 * 0.75),
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundImage: AssetImage('assets/images/pikachu.jpg'),
+                ),
+                if (true)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 16.0,
+                      width: 16.0,
+                    ),
+                  )
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.toString(),
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

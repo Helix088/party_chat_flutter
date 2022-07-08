@@ -4,7 +4,6 @@ import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../login_screen.dart';
 import 'package:flash_chat_flutter/components/message_stream.dart';
 
 final _firestore = FirebaseFirestore.instance;

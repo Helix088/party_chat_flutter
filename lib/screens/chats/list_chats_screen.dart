@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
-import 'package:flash_chat_flutter/components/chats_body.dart';
+import 'package:flash_chat_flutter/components/bodies.dart';
 import 'package:flutter/material.dart';
+import '../people_screen.dart';
 import '../settings.dart';
 import '../welcome_screen.dart';
 
@@ -79,7 +80,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
             ));
     return Scaffold(
       appBar: buildAppBar(),
-      body: Body(),
+      body: ChatBody(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final title = await titleEntry();
@@ -92,25 +93,28 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
           color: Colors.white,
         ),
       ),
-      bottomNavigationBar: BottomNavBar(press: (index) {
-        if (index == 0) {
-          setState(() {
-            Navigator.pushNamed(context, ListChatsScreen.id);
-          });
-        } else if (index == 1) {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        } else if (index == 2) {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        } else {
-          setState(() {
-            Navigator.pushNamed(context, SettingsScreen.id);
-          });
-        }
-      }),
+      bottomNavigationBar: BottomNavBar(
+        press: (index) {
+          if (index == 0) {
+            setState(() {
+              Navigator.pushNamed(context, ListChatsScreen.id);
+            });
+          } else if (index == 1) {
+            setState(() {
+              Navigator.pushNamed(context, PeopleScreen.id);
+            });
+          } else if (index == 2) {
+            setState(() {
+              Navigator.pushNamed(context, SettingsScreen.id);
+            });
+          }
+          // } else if (index == 2) {
+          //   setState(() {
+          //     Navigator.pushNamed(context, SettingsScreen.id);
+          //   });
+        },
+        currentIndex: 0,
+      ),
     );
   }
 

@@ -12,6 +12,7 @@ import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';
 import 'screens/chats/chat_screen.dart';
+import 'screens/people_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -54,7 +55,8 @@ class PartyChat extends StatelessWidget {
                         lensDirection: CameraLensDirection.back,
                         name: 'Back Camera',
                         sensorOrientation: 0),
-                  )
+                  ),
+              PeopleScreen.id: (context) => PeopleScreen(),
             },
             builder: EasyLoading.init(),
           );

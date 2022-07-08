@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'chat_card.dart';
+import 'cards.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat_flutter/screens/chats/chat_screen.dart';
 
@@ -61,6 +61,42 @@ class _ChatsDisplayState extends State<ChatsDisplay> {
             children: chatsCard,
           ),
         );
+      },
+    );
+  }
+}
+
+class PeopleDisplay extends StatefulWidget {
+  const PeopleDisplay({Key? key}) : super(key: key);
+  @override
+  State<PeopleDisplay> createState() => _PeopleDisplayState();
+}
+
+class _PeopleDisplayState extends State<PeopleDisplay> {
+  final auth = FirebaseAuth.instance.currentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+      builder: (contex, AsyncSnapshot<QuerySnapshot> usersnapshot) {
+        if (usersnapshot.connectionState == ConnectionState.waiting) {
+          return Container(child: Center(child: CircularProgressIndicator()));
+        } else {
+          return Expanded(
+            child: ListView.builder(
+              itemCount: usersnapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot document = usersnapshot.data!.docs[index];
+                if (document.id == auth!.uid) {
+                  return UsersCard(user: [], press: () {});
+                } else {
+                  return Text('There are no users');
+                }
+              },
+            ),
+          );
+        }
       },
     );
   }
