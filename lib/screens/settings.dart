@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
@@ -264,6 +265,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
+            TextButton(
+              onPressed: _saveSettings,
+              child: Text("Save Settings"),
+            ),
           ],
         ),
       ),
@@ -290,6 +295,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         currentIndex: 2,
       ),
     );
+  }
+
+  void _saveSettings() {
+    final newSettings = Settings(persistenceEnabled: true);
+    print(newSettings);
   }
 }
 
