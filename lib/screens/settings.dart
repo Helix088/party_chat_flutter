@@ -75,22 +75,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("English"), value: "English"),
+      DropdownMenuItem(child: Text("Spanish"), value: "Spanish"),
+      DropdownMenuItem(child: Text("French"), value: "French"),
+      DropdownMenuItem(child: Text("German"), value: "German"),
+    ];
+    return menuItems;
+  }
+
+  String selectedLanguage = 'English';
+
   Future<String?> changeLanguage() {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text('Select Language'),
         actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              _auth.sendPasswordResetEmail(email: (_user!.email).toString());
-              Navigator.pop(context, 'Submit');
+          DropdownButtonFormField(
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueGrey, width: 2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueGrey, width: 2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              filled: true,
+              fillColor: Colors.blueGrey,
+            ),
+            onChanged: (String? newLang) {
+              setState(() {
+                selectedLanguage = newLang!;
+              });
             },
-            child: const Text('Submit'),
+            value: selectedLanguage,
+            items: dropdownItems,
           ),
         ],
       ),
@@ -199,7 +221,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   ListTile(
                     onTap: () {
-                      setState(() {});
+                      setState(() {
+                        changeLanguage();
+                      });
                     },
                     title: Text(
                       'Language',
