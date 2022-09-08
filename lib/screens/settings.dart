@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';
 
@@ -21,13 +23,91 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late TextEditingController controller;
   final messageTextController = TextEditingController();
   bool _notifications = false;
+  bool _location = false;
   final _auth = FirebaseAuth.instance;
   final _user = FirebaseAuth.instance.currentUser;
+  PickedFile? _imageFile;
+  ImagePicker _picker = ImagePicker();
+  String selectedLanguage = 'English';
 
   @override
   void initState() {
     super.initState();
     controller = TextEditingController();
+  }
+
+  Widget imageProfile() {
+    return Center(
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: 65.0,
+            // ignore: unnecessary_null_comparison
+            backgroundImage: _imageFile == null
+                ? AssetImage("assets/images/pikachu.jpg")
+                : FileImage(File(_imageFile!.path)) as ImageProvider<Object>,
+          ),
+          Positioned(
+              bottom: 20.0,
+              right: 20.0,
+              child: InkWell(
+                onTap: (() {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: ((builder) => bottomSheet()),
+                  );
+                }),
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                  size: 28.0,
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      child: Column(children: [
+        Text(
+          "Choose Profile Photo",
+          style: TextStyle(fontSize: 20.0),
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton.icon(
+              icon: Icon(Icons.camera),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            TextButton.icon(
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                icon: Icon(Icons.image),
+                label: Text("Gallery")),
+          ],
+        )
+      ]),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    setState(() {
+      _imageFile = pickedFile as PickedFile?;
+    });
   }
 
   Future<String?> changeEmail() {
@@ -85,8 +165,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return menuItems;
   }
 
-  String selectedLanguage = 'English';
-
   Future<String?> changeLanguage() {
     return showDialog<String>(
       context: context,
@@ -132,22 +210,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(10.0)),
               child: Column(
                 children: [
-                  // ListTile(
-                  //   onTap: () async {
-                  //     await ImagePicker.pickImage(source: ImageSource.gallery);
-                  //   },
-                  //   title: Text(
-                  //     'Photo',
-                  //   ),
-                  //   leading: CircleAvatar(
-                  //     foregroundImage: ,
-                  //   ),
-                  //   trailing: Icon(
-                  //     Icons.edit,
-                  //   ),
-                  // ),
+                  imageProfile(),
                   SwitchListTile(
-                    contentPadding: EdgeInsets.all(8.0),
+                    contentPadding: EdgeInsets.only(right: 8.0, left: 16.0),
                     title: Text(
                       'Notifications',
                     ),
@@ -203,7 +268,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 children: [
                   SwitchListTile(
-                    contentPadding: EdgeInsets.all(8.0),
+                    contentPadding: EdgeInsets.only(right: 8.0, left: 16.0),
                     title: Text(
                       'Dark Theme',
                     ),
@@ -235,18 +300,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Icons.arrow_forward_ios_rounded,
                     ),
                   ),
-                  ListTile(
-                    onTap: () {
-                      setState(() {});
-                    },
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.only(right: 8.0, left: 17.0),
                     title: Text(
                       'Location',
                     ),
-                    leading: Icon(
+                    value: _location,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _location = value;
+                      });
+                    },
+                    activeColor: Colors.blueGrey[600],
+                    secondary: Icon(
                       Icons.location_on,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
                     ),
                   ),
                 ],
