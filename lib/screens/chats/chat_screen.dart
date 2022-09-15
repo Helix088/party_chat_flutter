@@ -90,8 +90,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 : FileImage(File(_imageFile!.path)) as ImageProvider<Object>,
           ),
           Positioned(
-              bottom: 20.0,
-              right: 20.0,
+              bottom: 10.0,
+              right: 10.0,
               child: InkWell(
                 onTap: (() {
                   showModalBottomSheet(
@@ -168,8 +168,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     groupImage(),
                     ListTile(
                       onTap: () {
-                        setState(() {
-                          addNewUsers();
+                        setState(() async {
+                          final newUser = await addNewUsers();
+                          if (newUser == null || newUser.isEmpty) return;
+                          addUser(users: newUser);
                         });
                       },
                       title: Text(
@@ -197,11 +199,8 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () async {
+            onPressed: () {
               changeSettings();
-              // final newUser = await addNewUsers();
-              // if (newUser == null || newUser.isEmpty) return;
-              // addUser(users: newUser);
             },
           ),
         ],

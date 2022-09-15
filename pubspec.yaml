@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.5
   animated_text_kit: ^4.2.1
   firebase_core: ^1.17.0
   firebase_auth: ^3.3.18
@@ -19,19 +19,21 @@ dependencies:
   image: ^3.2.0
   flutter_share: ^2.0.0
   extended_text_field: ^10.1.0
-  modal_progress_hud_nsn: ^0.1.0-nullsafety-1
+  modal_progress_hud_nsn: ^0.3.0
   vrouter: ^1.2.1
   image_picker: ^0.8.5+3
   firebase_storage: ^10.2.17
-  permission_handler: ^9.2.0
+  permission_handler: ^10.0.0
   tuple: ^2.0.0
   intl: ^0.17.0
   flutter_easyloading: ^3.0.5
-  font_awesome_flutter: ^10.1.0
+  font_awesome_flutter: ^10.2.1
   provider: ^6.0.3
-  camera: ^0.9.8+1
+  camera: ^0.10.0+1
   path_provider: ^2.0.11
   path: ^1.8.1
+  shared_preferences: ^2.0.15
+  contacts_service: ^0.6.3
 
 dev_dependencies:
   flutter_test:

@@ -22,20 +22,20 @@ class ChatBody extends StatelessWidget {
   }
 }
 
-class PeopleBody extends StatelessWidget {
-  const PeopleBody({Key? key}) : super(key: key);
+// class PeopleBody extends StatelessWidget {
+//   const PeopleBody({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
-          color: Colors.blueGrey,
-          child: Row(),
-        ),
-        PeopleDisplay(),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Container(
+//           padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+//           color: Colors.blueGrey,
+//           child: Row(),
+//         ),
+//         PeopleDisplay(),
+//       ],
+//     );
+//   }
+// }

@@ -6,7 +6,6 @@ import 'package:flash_chat_flutter/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'chats/list_chats_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
