@@ -197,12 +197,17 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              changeSettings();
-            },
-          ),
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: IconButton(
+              icon: const Icon(FontAwesomeIcons.userPlus),
+              onPressed: () async {
+                final newUser = await addNewUsers();
+                if (newUser == null || newUser.isEmpty) return;
+                addUser(users: newUser);
+              },
+            ),
+          )
         ],
         title: Text(''),
         backgroundColor: Colors.blueGrey,
@@ -233,22 +238,22 @@ class _ChatScreenState extends State<ChatScreen> {
                         messageText = value;
                       },
                       decoration: kMessageTextFieldDecoration.copyWith(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              FontAwesomeIcons.circleArrowUp,
-                              color: Colors.blueGrey,
-                            ),
-                            onPressed: () {
-                              messageTextController.clear();
-                              _firestore.collection('messages').add({
-                                'chatId': widget.chatId,
-                                'text': messageText,
-                                'sender': loggedInUser?.email,
-                                'sent': Timestamp.now(),
-                              });
-                            },
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            FontAwesomeIcons.circleArrowUp,
+                            color: Colors.blueGrey,
                           ),
-                          fillColor: Colors.white),
+                          onPressed: () {
+                            messageTextController.clear();
+                            _firestore.collection('messages').add({
+                              'chatId': widget.chatId,
+                              'text': messageText,
+                              'sender': loggedInUser?.email,
+                              'sent': Timestamp.now(),
+                            });
+                          },
+                        ),
+                      ),
                     ),
                   ),
                   TextButton(

@@ -547,7 +547,11 @@ packages:
       name: shared_preferences_android
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.0.13"
+=======
+    version: "2.0.12"
+>>>>>>> ad49cb8fe3ee135b45f2ec06126a06f91458ff5e
   shared_preferences_ios:
     dependency: transitive
     description:
@@ -575,7 +579,11 @@ packages:
       name: shared_preferences_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.1.0"
+=======
+    version: "2.0.0"
+>>>>>>> ad49cb8fe3ee135b45f2ec06126a06f91458ff5e
   shared_preferences_web:
     dependency: transitive
     description:

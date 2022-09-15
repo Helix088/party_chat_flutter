@@ -33,7 +33,10 @@ dependencies:
   path_provider: ^2.0.11
   path: ^1.8.1
   shared_preferences: ^2.0.15
+<<<<<<< HEAD
   contacts_service: ^0.6.3
+=======
+>>>>>>> ad49cb8fe3ee135b45f2ec06126a06f91458ff5e
 
 dev_dependencies:
   flutter_test:
