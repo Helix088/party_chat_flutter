@@ -163,7 +163,10 @@ class _PeopleScreenState extends State<PeopleScreen> {
         IconButton(
           onPressed: () async {
             await _auth.signOut();
-            Navigator.pushReplacementNamed(context, WelcomeScreen.id);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => WelcomeScreen()),
+            );
           },
           icon: Icon(Icons.logout),
         ),

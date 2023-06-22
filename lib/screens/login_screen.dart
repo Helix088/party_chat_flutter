@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, WelcomeScreen.id);
                 },
-                style: TextButton.styleFrom(primary: Colors.blueGrey),
+                style: TextButton.styleFrom(foregroundColor: Colors.blueGrey),
               ),
             ],
           ),
