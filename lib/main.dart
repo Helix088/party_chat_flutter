@@ -21,7 +21,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const PartyChat());
+  runApp(ChangeNotifierProvider<ThemeProvider>(
+      create: (_) => ThemeProvider(), child: const PartyChat()));
 }
 
 class PartyChat extends StatelessWidget {
@@ -31,12 +32,11 @@ class PartyChat extends StatelessWidget {
   Widget build(BuildContext context) => ChangeNotifierProvider(
         create: (context) => ThemeProvider(),
         builder: (context, _) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
           return MaterialApp(
             initialRoute: WelcomeScreen.id,
             theme: MyThemes.lightTheme,
-            themeMode: themeProvider.themeMode,
             darkTheme: MyThemes.darkTheme,
+            themeMode: Provider.of<ThemeProvider>(context).themeMode,
             routes: {
               WelcomeScreen.id: (context) => WelcomeScreen(),
               LoginScreen.id: (context) => LoginScreen(),
@@ -50,12 +50,13 @@ class PartyChat extends StatelessWidget {
                     screen: ListChatsScreen(),
                   ),
               SettingsScreen.id: (context) => SettingsScreen(),
-              TakePictureScreen.id: (context) => TakePictureScreen(
-                    camera: CameraDescription(
-                        lensDirection: CameraLensDirection.back,
-                        name: 'Back Camera',
-                        sensorOrientation: 0),
-                  ),
+              ImagePickerScreen.id: (context) => ImagePickerScreen(),
+              // TakePictureScreen.id: (context) => TakePictureScreen(
+              //       camera: CameraDescription(
+              //           lensDirection: CameraLensDirection.back,
+              //           name: 'Back Camera',
+              //           sensorOrientation: 0),
+              //     ),
               PeopleScreen.id: (context) => PeopleScreen(),
             },
             builder: EasyLoading.init(),

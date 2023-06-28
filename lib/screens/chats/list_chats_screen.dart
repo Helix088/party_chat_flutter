@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:flash_chat_flutter/components/bodies.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../components/theme_provider.dart';
 import '../people_screen.dart';
 import '../settings.dart';
 import '../welcome_screen.dart';
@@ -60,62 +62,64 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<String?> titleEntry() => showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text('Group Chat Name'),
-              content: TextField(
-                autofocus: true,
-                decoration: InputDecoration(hintText: 'Enter Chat Name'),
-                controller: controller,
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(controller.text);
-                  },
-                  child: Text('SUBMIT'),
+    return Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
+      Future<String?> titleEntry() => showDialog<String>(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('Group Chat Name'),
+                content: TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(hintText: 'Enter Chat Name'),
+                  controller: controller,
                 ),
-              ],
-            ));
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: ChatBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final title = await titleEntry();
-          if (title == null || title.isEmpty) return;
-          newCard(title: title, users: users);
-        },
-        backgroundColor: Colors.blueGrey,
-        child: Icon(
-          Icons.add_comment,
-          color: Colors.white,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(controller.text);
+                    },
+                    child: Text('SUBMIT'),
+                  ),
+                ],
+              ));
+      return Scaffold(
+        appBar: buildAppBar(),
+        body: ChatBody(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final title = await titleEntry();
+            if (title == null || title.isEmpty) return;
+            newCard(title: title, users: users);
+          },
+          backgroundColor: Colors.blueGrey,
+          child: Icon(
+            Icons.add_comment,
+            color: Colors.white,
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        press: (index) {
-          if (index == 0) {
-            setState(() {
-              Navigator.pushNamed(context, ListChatsScreen.id);
-            });
-          } else if (index == 1) {
-            setState(() {
-              Navigator.pushNamed(context, PeopleScreen.id);
-            });
-          } else if (index == 2) {
-            setState(() {
-              Navigator.pushNamed(context, SettingsScreen.id);
-            });
-          }
-          // } else if (index == 2) {
-          //   setState(() {
-          //     Navigator.pushNamed(context, SettingsScreen.id);
-          //   });
-        },
-        currentIndex: 0,
-      ),
-    );
+        bottomNavigationBar: BottomNavBar(
+          press: (index) {
+            if (index == 0) {
+              setState(() {
+                Navigator.pushNamed(context, ListChatsScreen.id);
+              });
+            } else if (index == 1) {
+              setState(() {
+                Navigator.pushNamed(context, PeopleScreen.id);
+              });
+            } else if (index == 2) {
+              setState(() {
+                Navigator.pushNamed(context, SettingsScreen.id);
+              });
+            }
+            // } else if (index == 2) {
+            //   setState(() {
+            //     Navigator.pushNamed(context, SettingsScreen.id);
+            //   });
+          },
+          currentIndex: 0,
+        ),
+      );
+    });
   }
 
   AppBar buildAppBar() {

@@ -2,12 +2,16 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
-import 'package:flash_chat_flutter/constants.dart';
+import 'package:flash_chat_flutter/screens/welcome_screen.dart'
+    as WelcomeScreen;
+// import 'package:flash_chat_flutter/screens/welcome_screen.dart';
 import 'package:flash_chat_flutter/screens/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../components/theme_provider.dart';
 import 'chats/list_chats_screen.dart';
-import 'email_verification.dart';
+// import 'email_verification.dart' as EmailVerification;
 
 User? loggedInUser;
 // final _firestore = FirebaseFirestore.instance;
@@ -74,84 +78,86 @@ class _PeopleScreenState extends State<PeopleScreen> {
   @override
   Widget build(BuildContext context) {
     bool isSearching = searchController.text.isNotEmpty;
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                    labelText: 'Search',
-                    fillColor: Colors.blueGrey,
-                    border: OutlineInputBorder(
-                      borderSide: new BorderSide(
-                        color: Colors.blueGrey,
-                        width: 5.0,
+    return Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
+      return Scaffold(
+        appBar: buildAppBar(),
+        body: Container(
+          padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                      labelText: 'Search',
+                      fillColor: Colors.blueGrey,
+                      border: OutlineInputBorder(
+                        borderSide: new BorderSide(
+                          color: Colors.blueGrey,
+                          width: 5.0,
+                        ),
                       ),
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.blueGrey,
-                    )),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.blueGrey,
+                      )),
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: isSearching == true
-                    ? contactsFiltered.length
-                    : contacts.length,
-                itemBuilder: (context, index) {
-                  Contact contact = isSearching == true
-                      ? contactsFiltered[index]
-                      : contacts[index];
-                  return ListTile(
-                    title: Text(contact.displayName!),
-                    subtitle: Text(contact.phones!.elementAt(0).value!),
-                    leading:
-                        (contact.avatar != null && contact.avatar!.length > 0)
-                            ? CircleAvatar(
-                                backgroundImage: MemoryImage(contact.avatar!),
-                              )
-                            : CircleAvatar(
-                                child: Text(contact.initials()),
-                              ),
-                  );
-                },
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: isSearching == true
+                      ? contactsFiltered.length
+                      : contacts.length,
+                  itemBuilder: (context, index) {
+                    Contact contact = isSearching == true
+                        ? contactsFiltered[index]
+                        : contacts[index];
+                    return ListTile(
+                      title: Text(contact.displayName!),
+                      subtitle: Text(contact.phones!.elementAt(0).value!),
+                      leading:
+                          (contact.avatar != null && contact.avatar!.length > 0)
+                              ? CircleAvatar(
+                                  backgroundImage: MemoryImage(contact.avatar!),
+                                )
+                              : CircleAvatar(
+                                  child: Text(contact.initials()),
+                                ),
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        press: (index) {
-          if (index == 0) {
-            setState(() {
-              Navigator.pushNamed(context, ListChatsScreen.id);
-            });
-          } else if (index == 1) {
-            setState(() {
-              Navigator.pushNamed(context, PeopleScreen.id);
-            });
-          } else if (index == 2) {
-            setState(() {
-              Navigator.pushNamed(context, SettingsScreen.id);
-            });
-          }
-          // } else if (index == 2) {
-          //   setState(() {
-          //     Navigator.pushNamed(context, SettingsScreen.id);
-          //   });
-        },
-        currentIndex: 1,
-      ),
-    );
+        bottomNavigationBar: BottomNavBar(
+          press: (index) {
+            if (index == 0) {
+              setState(() {
+                Navigator.pushNamed(context, ListChatsScreen.id);
+              });
+            } else if (index == 1) {
+              setState(() {
+                Navigator.pushNamed(context, PeopleScreen.id);
+              });
+            } else if (index == 2) {
+              setState(() {
+                Navigator.pushNamed(context, SettingsScreen.id);
+              });
+            }
+            // } else if (index == 2) {
+            //   setState(() {
+            //     Navigator.pushNamed(context, SettingsScreen.id);
+            //   });
+          },
+          currentIndex: 1,
+        ),
+      );
+    });
   }
 
   AppBar buildAppBar() {
@@ -163,10 +169,8 @@ class _PeopleScreenState extends State<PeopleScreen> {
         IconButton(
           onPressed: () async {
             await _auth.signOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => WelcomeScreen()),
-            );
+            Navigator.pushReplacementNamed(
+                context, WelcomeScreen.WelcomeScreen.id);
           },
           icon: Icon(Icons.logout),
         ),

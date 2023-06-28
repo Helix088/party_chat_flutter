@@ -6,7 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flash_chat_flutter/components/message_stream.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+
+import '../../components/theme_provider.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
@@ -193,77 +196,80 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: null,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              changeSettings();
-            },
-          ),
-        ],
-        title: Text(''),
-        backgroundColor: Colors.blueGrey,
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            MessageStream(chatId: widget.chatId),
-            Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, TakePictureScreen.id);
-                    },
-                    child: Icon(
-                      FontAwesomeIcons.camera,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: messageTextController,
-                      onChanged: (value) {
-                        messageText = value;
+    return Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: null,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                changeSettings();
+              },
+            ),
+          ],
+          title: Text(''),
+          backgroundColor: Colors.blueGrey,
+        ),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              MessageStream(chatId: widget.chatId),
+              Container(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, ImagePickerScreen.id);
+                        // Navigator.pushNamed(context, TakePictureScreen.id);
                       },
-                      decoration: kMessageTextFieldDecoration.copyWith(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            FontAwesomeIcons.circleArrowUp,
-                            color: Colors.blueGrey,
+                      child: Icon(
+                        FontAwesomeIcons.camera,
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: messageTextController,
+                        onChanged: (value) {
+                          messageText = value;
+                        },
+                        decoration: kMessageTextFieldDecoration.copyWith(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              FontAwesomeIcons.circleArrowUp,
+                              color: Colors.blueGrey,
+                            ),
+                            onPressed: () {
+                              messageTextController.clear();
+                              _firestore.collection('messages').add({
+                                'chatId': widget.chatId,
+                                'text': messageText,
+                                'sender': loggedInUser?.email,
+                                'sent': Timestamp.now(),
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            messageTextController.clear();
-                            _firestore.collection('messages').add({
-                              'chatId': widget.chatId,
-                              'text': messageText,
-                              'sender': loggedInUser?.email,
-                              'sent': Timestamp.now(),
-                            });
-                          },
                         ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Icon(
-                      FontAwesomeIcons.circlePlus,
-                      color: Colors.blueGrey,
+                    TextButton(
+                      onPressed: () {},
+                      child: Icon(
+                        FontAwesomeIcons.circlePlus,
+                        color: Colors.blueGrey,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
