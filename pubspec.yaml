@@ -34,6 +34,7 @@ dependencies:
   path: ^1.8.1
   shared_preferences: ^2.0.15
   contacts_service: ^0.6.3
+  image_cropper: ^4.0.1
 
 dev_dependencies:
   flutter_test:

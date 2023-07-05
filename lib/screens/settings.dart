@@ -6,6 +6,7 @@ import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';
@@ -51,7 +52,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             bottom: 20.0,
             right: 20.0,
             child: InkWell(
-              onTap: _pickImage,
+              onTap: () {
+                _pickImage();
+              },
               child: Icon(
                 Icons.camera_alt,
                 color: Colors.white,
@@ -73,74 +76,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _imageFile = File(pickedImage.path);
       });
     }
-  }
-
-  // Widget imageProfile() {
-  //   File? _imageFile;
-  //   return Center(
-  //     child: Stack(
-  //       children: [
-  //         CircleAvatar(
-  //           radius: 65.0,
-  //           // ignore: unnecessary_null_comparison
-  //           backgroundImage: _imageFile == null
-  //               ? AssetImage("assets/images/pikachu.jpg")
-  //               : FileImage(File(_imageFile!.path)) as ImageProvider<Object>,
-  //         ),
-  //         Positioned(
-  //             bottom: 20.0,
-  //             right: 20.0,
-  //             child: InkWell(
-  //               onTap: (() {
-  //                 showModalBottomSheet(
-  //                   context: context,
-  //                   builder: ((builder) => bottomSheet()),
-  //                 );
-  //               }),
-  //               child: Icon(
-  //                 Icons.camera_alt,
-  //                 color: Colors.white,
-  //                 size: 28.0,
-  //               ),
-  //             ))
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      child: Column(children: [
-        Text(
-          "Choose Profile Photo",
-          style: TextStyle(fontSize: 20.0),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton.icon(
-              icon: Icon(Icons.camera),
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              label: Text("Camera"),
-            ),
-            TextButton.icon(
-                onPressed: () {
-                  takePhoto(ImageSource.gallery);
-                },
-                icon: Icon(Icons.image),
-                label: Text("Gallery")),
-          ],
-        )
-      ]),
-    );
   }
 
   void takePhoto(ImageSource source) async {
@@ -395,10 +330,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
-              TextButton(
-                onPressed: _saveSettings,
-                child: Text("Save Settings"),
-              ),
             ],
           ),
         ),
@@ -426,11 +357,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       );
     });
-  }
-
-  void _saveSettings() {
-    final newSettings = Settings(persistenceEnabled: true);
-    print(newSettings);
   }
 }
 
