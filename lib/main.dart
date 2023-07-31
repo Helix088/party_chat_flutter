@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,14 +14,14 @@ import 'screens/settings.dart';
 import 'components/protected_route.dart';
 import 'components/theme_provider.dart';
 import 'screens/chats/list_chats_screen.dart';
-import 'screens/take_picture.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const PartyChat());
+  runApp(ChangeNotifierProvider<ThemeProvider>(
+      create: (_) => ThemeProvider(), child: const PartyChat()));
 }
 
 class PartyChat extends StatelessWidget {
@@ -39,12 +38,11 @@ class PartyChat extends StatelessWidget {
           ),
         ],
         builder: (context, _) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
           return MaterialApp(
             initialRoute: WelcomeScreen.id,
             theme: MyThemes.lightTheme,
-            themeMode: themeProvider.themeMode,
             darkTheme: MyThemes.darkTheme,
+            themeMode: Provider.of<ThemeProvider>(context).themeMode,
             routes: {
               WelcomeScreen.id: (context) => WelcomeScreen(),
               LoginScreen.id: (context) => LoginScreen(),
@@ -58,12 +56,13 @@ class PartyChat extends StatelessWidget {
                     screen: ListChatsScreen(),
                   ),
               SettingsScreen.id: (context) => SettingsScreen(),
-              TakePictureScreen.id: (context) => TakePictureScreen(
-                    camera: CameraDescription(
-                        lensDirection: CameraLensDirection.back,
-                        name: 'Back Camera',
-                        sensorOrientation: 0),
-                  ),
+              ImagePickerScreen.id: (context) => ImagePickerScreen(),
+              // TakePictureScreen.id: (context) => TakePictureScreen(
+              //       camera: CameraDescription(
+              //           lensDirection: CameraLensDirection.back,
+              //           name: 'Back Camera',
+              //           sensorOrientation: 0),
+              //     ),
               PeopleScreen.id: (context) => PeopleScreen(),
             },
             builder: EasyLoading.init(),

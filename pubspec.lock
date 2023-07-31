@@ -391,7 +391,32 @@ packages:
       sha256: a72242c9a0ffb65d03de1b7113bc4e189686fc07c7147b8b41811d0dd0e0d9bf
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "4.0.17"
+=======
+    version: "3.2.0"
+  image_cropper:
+    dependency: "direct main"
+    description:
+      name: image_cropper
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
+  image_cropper_for_web:
+    dependency: transitive
+    description:
+      name: image_cropper_for_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  image_cropper_platform_interface:
+    dependency: transitive
+    description:
+      name: image_cropper_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
+>>>>>>> 8413b145b2286e86fd4f718cb06038aa5adcedc7
   image_picker:
     dependency: "direct main"
     description:
@@ -918,5 +943,10 @@ packages:
     source: hosted
     version: "6.3.0"
 sdks:
+<<<<<<< HEAD
   dart: ">=3.0.0 <4.0.0"
   flutter: ">=3.10.0"
+=======
+  dart: ">=2.18.0 <3.0.0"
+  flutter: ">=3.3.0"
+>>>>>>> 8413b145b2286e86fd4f718cb06038aa5adcedc7

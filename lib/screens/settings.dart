@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';
@@ -27,7 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _location = false;
   final _auth = FirebaseAuth.instance;
   final _user = FirebaseAuth.instance.currentUser;
-  PickedFile? _imageFile;
+  File? _imageFile;
   ImagePicker _picker = ImagePicker();
   String selectedLanguage = 'English';
 
@@ -37,77 +37,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
     controller = TextEditingController();
   }
 
-  Widget imageProfile() {
+  Widget imageProfile(File? imageFile) {
     return Center(
       child: Stack(
         children: [
           CircleAvatar(
             radius: 65.0,
-            // ignore: unnecessary_null_comparison
-            backgroundImage: _imageFile == null
+            backgroundImage: imageFile == null
                 ? AssetImage("assets/images/pikachu.jpg")
-                : FileImage(File(_imageFile!.path)) as ImageProvider<Object>,
+                : FileImage(imageFile) as ImageProvider<Object>,
           ),
           Positioned(
-              bottom: 20.0,
-              right: 20.0,
-              child: InkWell(
-                onTap: (() {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: ((builder) => bottomSheet()),
-                  );
-                }),
-                child: Icon(
-                  Icons.camera_alt,
-                  color: Colors.white,
-                  size: 28.0,
-                ),
-              ))
+            bottom: 20.0,
+            right: 20.0,
+            child: InkWell(
+              onTap: () {
+                _pickImage();
+              },
+              child: Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: 28.0,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      child: Column(children: [
-        Text(
-          "Choose Profile Photo",
-          style: TextStyle(fontSize: 20.0),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton.icon(
-              icon: Icon(Icons.camera),
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              label: Text("Camera"),
-            ),
-            TextButton.icon(
-                onPressed: () {
-                  takePhoto(ImageSource.gallery);
-                },
-                icon: Icon(Icons.image),
-                label: Text("Gallery")),
-          ],
-        )
-      ]),
-    );
+  Future<void> _pickImage() async {
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
+    }
   }
 
   void takePhoto(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     setState(() {
-      _imageFile = pickedFile as PickedFile?;
+      _imageFile = pickedFile as File?;
     });
   }
 
@@ -200,197 +173,189 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Column(
-                children: [
-                  imageProfile(),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.only(right: 8.0, left: 16.0),
-                    title: Text(
-                      'Notifications',
+    return Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
+      return Scaffold(
+        appBar: buildAppBar(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: Column(
+                  children: [
+                    imageProfile(_imageFile),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.only(right: 8.0, left: 16.0),
+                      title: Text(
+                        'Notifications',
+                      ),
+                      value: _notifications,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _notifications = value;
+                        });
+                      },
+                      activeColor: Colors.blueGrey[600],
+                      secondary: Icon(
+                        Icons.notifications,
+                      ),
                     ),
-                    value: _notifications,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _notifications = value;
-                      });
-                    },
-                    activeColor: Colors.blueGrey[600],
-                    secondary: Icon(
-                      Icons.notifications,
+                    ListTile(
+                      onTap: () {
+                        setState(() {
+                          changeEmail();
+                        });
+                      },
+                      title: Text(
+                        'Email',
+                      ),
+                      leading: Icon(
+                        Icons.email,
+                      ),
+                      trailing: Icon(
+                        Icons.edit,
+                      ),
                     ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        changeEmail();
-                      });
-                    },
-                    title: Text(
-                      'Email',
+                    ListTile(
+                      onTap: () {
+                        setState(() {
+                          changePassword();
+                        });
+                      },
+                      title: Text(
+                        'Change Password',
+                      ),
+                      leading: Icon(
+                        Icons.lock_person_rounded,
+                      ),
+                      trailing: Icon(
+                        Icons.edit,
+                      ),
                     ),
-                    leading: Icon(
-                      Icons.email,
-                    ),
-                    trailing: Icon(
-                      Icons.edit,
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        changePassword();
-                      });
-                    },
-                    title: Text(
-                      'Change Password',
-                    ),
-                    leading: Icon(
-                      Icons.lock_person_rounded,
-                    ),
-                    trailing: Icon(
-                      Icons.edit,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Column(
-                children: [
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.only(right: 8.0, left: 16.0),
-                    title: Text(
-                      'Dark Theme',
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: Column(
+                  children: [
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.only(right: 8.0, left: 16.0),
+                      title: Text(
+                        'Dark Theme',
+                      ),
+                      value: themeProvider.isDarkMode,
+                      onChanged: (value) {
+                        setState(() {
+                          final provider = themeProvider;
+                          provider.toggleTheme(value);
+                        });
+                      },
+                      activeColor: Colors.blueGrey[600],
+                      secondary: Icon(
+                        Icons.dark_mode,
+                      ),
                     ),
-                    value: themeProvider.isDarkMode,
-                    onChanged: (value) {
-                      setState(() {
-                        final provider = themeProvider;
-                        provider.toggleTheme(value);
-                      });
-                    },
-                    activeColor: Colors.blueGrey[600],
-                    secondary: Icon(
-                      Icons.dark_mode,
+                    ListTile(
+                      onTap: () {
+                        setState(() {
+                          changeLanguage();
+                        });
+                      },
+                      title: Text(
+                        'Language',
+                      ),
+                      leading: Icon(
+                        FontAwesomeIcons.language,
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                      ),
                     ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        changeLanguage();
-                      });
-                    },
-                    title: Text(
-                      'Language',
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.only(right: 8.0, left: 17.0),
+                      title: Text(
+                        'Location',
+                      ),
+                      value: _location,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _location = value;
+                        });
+                      },
+                      activeColor: Colors.blueGrey[600],
+                      secondary: Icon(
+                        Icons.location_on,
+                      ),
                     ),
-                    leading: Icon(
-                      FontAwesomeIcons.language,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                    ),
-                  ),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.only(right: 8.0, left: 17.0),
-                    title: Text(
-                      'Location',
-                    ),
-                    value: _location,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _location = value;
-                      });
-                    },
-                    activeColor: Colors.blueGrey[600],
-                    secondary: Icon(
-                      Icons.location_on,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Column(
-                children: [
-                  ListTile(
-                    onTap: () {
-                      setState(() {});
-                    },
-                    title: Text(
-                      'About Us',
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: Column(
+                  children: [
+                    ListTile(
+                      onTap: () {
+                        setState(() {});
+                      },
+                      title: Text(
+                        'About Us',
+                      ),
+                      leading: Icon(
+                        FontAwesomeIcons.circleInfo,
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                      ),
                     ),
-                    leading: Icon(
-                      FontAwesomeIcons.circleInfo,
+                    ListTile(
+                      onTap: () {
+                        setState(() {});
+                      },
+                      title: Text(
+                        'Help',
+                      ),
+                      leading: Icon(
+                        FontAwesomeIcons.circleQuestion,
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                      ),
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      setState(() {});
-                    },
-                    title: Text(
-                      'Help',
-                    ),
-                    leading: Icon(
-                      FontAwesomeIcons.circleQuestion,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: _saveSettings,
-              child: Text("Save Settings"),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        press: (index) {
-          if (index == 0) {
-            setState(() {
-              Navigator.pushNamed(context, ListChatsScreen.id);
-            });
-          } else if (index == 1) {
-            setState(() {
-              Navigator.pushNamed(context, PeopleScreen.id);
-            });
-          } else if (index == 2) {
-            setState(() {
-              Navigator.pushNamed(context, SettingsScreen.id);
-            });
-          }
-          // } else if (index == 2) {
-          //   setState(() {
-          //     Navigator.pushNamed(context, SettingsScreen.id);
-          //   });
-        },
-        currentIndex: 2,
-      ),
-    );
-  }
-
-  void _saveSettings() {
-    final newSettings = Settings(persistenceEnabled: true);
-    print(newSettings);
+        bottomNavigationBar: BottomNavBar(
+          press: (index) {
+            if (index == 0) {
+              setState(() {
+                Navigator.pushNamed(context, ListChatsScreen.id);
+              });
+            } else if (index == 1) {
+              setState(() {
+                Navigator.pushNamed(context, PeopleScreen.id);
+              });
+            } else if (index == 2) {
+              setState(() {
+                Navigator.pushNamed(context, SettingsScreen.id);
+              });
+            }
+            // } else if (index == 2) {
+            //   setState(() {
+            //     Navigator.pushNamed(context, SettingsScreen.id);
+            //   });
+          },
+          currentIndex: 2,
+        ),
+      );
+    });
   }
 }
 
