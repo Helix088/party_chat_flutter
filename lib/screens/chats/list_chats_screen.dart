@@ -44,13 +44,22 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
     }
   }
 
-  Future<void> newCard({required title, required users}) {
+  Future<void> newCard({required title, required users, String? imageUrl}) {
     return _firestore.collection('chats').add({
       'title': title,
       'lastSent': Timestamp.now(),
-      'users': [loggedInUser?.email]
+      'users': [loggedInUser?.email],
+      'imageUrl': imageUrl,
     });
   }
+
+  // Future<void> newCard({required title, required users}) {
+  //   return _firestore.collection('chats').add({
+  //     'title': title,
+  //     'lastSent': Timestamp.now(),
+  //     'users': [loggedInUser?.email]
+  //   });
+  // }
 
   @override
   void dispose() {

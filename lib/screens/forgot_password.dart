@@ -86,14 +86,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       print(e);
                     }
                   },
-                  style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
                 ),
                 TextButton(
                   child: Text('Log In'),
                   onPressed: () {
                     Navigator.pushNamed(context, LoginScreen.id);
                   },
-                  style: TextButton.styleFrom(primary: Colors.blueGrey),
+                  style: TextButton.styleFrom(foregroundColor: Colors.blueGrey),
                 ),
               ],
             ),

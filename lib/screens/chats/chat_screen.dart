@@ -2,11 +2,16 @@ import 'package:flash_chat_flutter/screens/take_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flash_chat_flutter/components/message_stream.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+
+import '../../components/image_provider_modal.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
@@ -31,8 +36,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   final title = _firestore.collection('chats').doc('title');
   String? messageText;
-  PickedFile? _imageFile;
-  ImagePicker _picker = ImagePicker();
+  final _picker = ImagePicker();
+  // PickedFile? _imageFile;
+  // ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -79,36 +85,88 @@ class _ChatScreenState extends State<ChatScreen> {
           ));
 
   Widget groupImage() {
+    final imageProviderModel = Provider.of<ImageProviderModel>(context);
+    final _imageFile = imageProviderModel.imageFile;
+
     return Center(
       child: Stack(
         children: [
-          CircleAvatar(
-            radius: 40.0,
-            // ignore: unnecessary_null_comparison
-            backgroundImage: _imageFile == null
-                ? AssetImage("assets/images/pikachu.jpg")
-                : FileImage(File(_imageFile!.path)) as ImageProvider<Object>,
-          ),
-          Positioned(
-              bottom: 10.0,
-              right: 10.0,
-              child: InkWell(
-                onTap: (() {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: ((builder) => bottomSheet()),
-                  );
-                }),
-                child: Icon(
-                  Icons.camera_alt,
-                  color: Colors.white,
-                  size: 28.0,
+          _imageFile != null
+              ? kIsWeb
+                  ? Image.network(
+                      _imageFile.path,
+                      height: 80.0,
+                      width: 80.0,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.file(
+                      File(_imageFile.path),
+                      height: 80.0,
+                      width: 80.0,
+                      fit: BoxFit.cover,
+                    )
+              : CircleAvatar(
+                  radius: 40.0,
+                  backgroundImage: AssetImage("assets/images/pikachu.jpg"),
                 ),
-              ))
+          Positioned(
+            bottom: 10.0,
+            right: 10.0,
+            child: InkWell(
+              onTap: () async {
+                await _pickImage();
+              },
+              child: Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: 28.0,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  Future<void> _pickImage() async {
+    final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      Provider.of<ImageProviderModel>(context, listen: false).setImageFile(
+          pickedImage); // Update the selected image using provider
+    }
+  }
+
+  // Widget groupImage() {
+  //   return Center(
+  //     child: Stack(
+  //       children: [
+  //         CircleAvatar(
+  //           radius: 40.0,
+  //           // ignore: unnecessary_null_comparison
+  //           backgroundImage: _imageFile == null
+  //               ? AssetImage("assets/images/pikachu.jpg")
+  //               : FileImage(File(_imageFile!.path)) as ImageProvider<Object>,
+  //         ),
+  //         Positioned(
+  //             bottom: 10.0,
+  //             right: 10.0,
+  //             child: InkWell(
+  //               onTap: (() {
+  //                 showModalBottomSheet(
+  //                   context: context,
+  //                   builder: ((builder) => bottomSheet()),
+  //                 );
+  //               }),
+  //               child: Icon(
+  //                 Icons.camera_alt,
+  //                 color: Colors.white,
+  //                 size: 28.0,
+  //               ),
+  //             ))
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget bottomSheet() {
     return Container(
@@ -129,13 +187,15 @@ class _ChatScreenState extends State<ChatScreen> {
             TextButton.icon(
               icon: Icon(Icons.camera),
               onPressed: () {
-                takePhoto(ImageSource.camera);
+                _pickImage();
+                // takePhoto(ImageSource.camera);
               },
               label: Text("Camera"),
             ),
             TextButton.icon(
                 onPressed: () {
-                  takePhoto(ImageSource.gallery);
+                  _pickImage();
+                  // takePhoto(ImageSource.gallery);
                 },
                 icon: Icon(Icons.image),
                 label: Text("Gallery")),
@@ -145,12 +205,12 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    setState(() {
-      _imageFile = pickedFile as PickedFile?;
-    });
-  }
+  // void takePhoto(ImageSource source) async {
+  //   final pickedFile = await _picker.pickImage(source: source);
+  //   setState(() {
+  //     _imageFile = pickedFile as PickedFile?;
+  //   });
+  // }
 
   Future<String?> changeSettings() {
     return showDialog<String>(

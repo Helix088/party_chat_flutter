@@ -2,7 +2,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
-import 'package:flash_chat_flutter/constants.dart';
 import 'package:flash_chat_flutter/screens/settings.dart';
 import 'package:flutter/material.dart';
 
