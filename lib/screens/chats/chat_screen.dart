@@ -5,16 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flash_chat_flutter/components/message_stream.dart';
 import 'package:image_picker/image_picker.dart';
-<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
-
 import '../../components/image_provider_modal.dart';
-=======
-
 import '../../components/theme_provider.dart';
->>>>>>> 8413b145b2286e86fd4f718cb06038aa5adcedc7
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
@@ -283,7 +278,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: <Widget>[
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, ImagePickerScreen.id);
+                        // Navigator.pushNamed(context, ImagePickerScreen.id);
                         // Navigator.pushNamed(context, TakePictureScreen.id);
                       },
                       child: Icon(

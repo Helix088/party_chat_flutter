@@ -80,22 +80,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       setState(() {
                         showSpinner = true;
                       });
-<<<<<<< HEAD
-                    } catch (e) {
-                      print(e);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                ),
-                TextButton(
-                  child: Text('Log In'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  style: TextButton.styleFrom(foregroundColor: Colors.blueGrey),
-                ),
-              ],
-=======
                       try {
                         await _auth.sendPasswordResetEmail(email: email!);
                         setState(() {
@@ -105,19 +89,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         print(e);
                       }
                     },
-                    style: ElevatedButton.styleFrom(),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueGrey),
                   ),
                   TextButton(
-                    child = Text('Log In'),
-                    onPressed = () {
+                    child: Text('Log In'),
+                    onPressed: () {
                       Navigator.pushNamed(context, LoginScreen.id);
                     },
-                    style =
+                    style:
                         TextButton.styleFrom(foregroundColor: Colors.blueGrey),
                   ),
                 ],
               ),
->>>>>>> 8413b145b2286e86fd4f718cb06038aa5adcedc7
             ),
           ),
         ),

@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat_flutter/components/rounded_button.dart';
+import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
+import 'package:flash_chat_flutter/screens/forgot_password.dart';
 import 'package:flash_chat_flutter/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flash_chat_flutter/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -42,20 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 48.0,
                 ),
-<<<<<<< HEAD
-                onPressed: () {
-                  Navigator.pushNamed(context, ForgotPasswordScreen.id);
-                },
-              ),
-              TextButton(
-                child: Text('Back to Welcome Screen'),
-                onPressed: () {
-                  Navigator.pushNamed(context, WelcomeScreen.id);
-                },
-                style: TextButton.styleFrom(foregroundColor: Colors.blueGrey),
-              ),
-            ],
-=======
                 TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -118,7 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
->>>>>>> 8413b145b2286e86fd4f718cb06038aa5adcedc7
           ),
         ),
       );

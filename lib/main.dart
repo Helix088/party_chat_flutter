@@ -56,7 +56,7 @@ class PartyChat extends StatelessWidget {
                     screen: ListChatsScreen(),
                   ),
               SettingsScreen.id: (context) => SettingsScreen(),
-              ImagePickerScreen.id: (context) => ImagePickerScreen(),
+              // ImagePickerScreen.id: (context) => ImagePickerScreen(),
               // TakePictureScreen.id: (context) => TakePictureScreen(
               //       camera: CameraDescription(
               //           lensDirection: CameraLensDirection.back,

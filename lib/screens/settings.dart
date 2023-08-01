@@ -5,7 +5,6 @@ import 'package:flash_chat_flutter/screens/chats/list_chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flash_chat_flutter/components/theme_provider.dart';

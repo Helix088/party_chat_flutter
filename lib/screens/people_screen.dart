@@ -2,12 +2,9 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat_flutter/components/btm_nav_bar.dart';
-<<<<<<< HEAD
-=======
 import 'package:flash_chat_flutter/screens/welcome_screen.dart'
     as WelcomeScreen;
 // import 'package:flash_chat_flutter/screens/welcome_screen.dart';
->>>>>>> 8413b145b2286e86fd4f718cb06038aa5adcedc7
 import 'package:flash_chat_flutter/screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
