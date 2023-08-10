@@ -46,7 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
       return Scaffold(
-        backgroundColor: animation?.value,
+        // backgroundColor: animation?.value,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
@@ -96,7 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   Navigator.pushNamed(context, RegistrationScreen.id);
                 },
                 title: 'Register',
-                color: Colors.blueGrey.shade800,
+                color: Colors.blueGrey,
                 textColor: Colors.white,
               ),
             ],
