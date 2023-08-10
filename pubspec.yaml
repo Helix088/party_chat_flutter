@@ -35,6 +35,9 @@ dependencies:
   shared_preferences: ^2.0.15
   contacts_service: ^0.6.3
   image_cropper: ^4.0.1
+  firebase_messaging: ^14.6.5
+  firebase_in_app_messaging: ^0.7.3+4
+  firebase_messaging_web: ^3.5.4
 
 dev_dependencies:
   flutter_test:

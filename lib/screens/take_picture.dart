@@ -211,68 +211,74 @@
 //   }
 // }
 
-// import 'dart:async';
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:provider/provider.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-// import '../components/image_provider_modal.dart';
+import '../components/image_provider_modal.dart';
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   runApp(MaterialApp(
-//     theme: ThemeData.dark(),
-//     home: ImagePickerScreen(),
-//   ));
-// }
+class TakePictureScreen extends StatefulWidget {
+  static const String id = 'take_picture_screen';
+  final CameraDescription camera;
 
-// class ImagePickerScreen extends StatefulWidget {
-//   static const String id = 'image_picker_screen';
+  const TakePictureScreen({Key? key, required this.camera}) : super(key: key);
 
-//   @override
-//   _ImagePickerScreenState createState() => _ImagePickerScreenState();
-// }
+  @override
+  State<StatefulWidget> createState() => _TakePictureScreenState();
+}
 
-// class _ImagePickerScreenState extends State<ImagePickerScreen> {
-//   XFile? _imageFile;
+class _TakePictureScreenState extends State<TakePictureScreen> {
+  final _picker = ImagePicker();
 
-//   Future<void> _pickImage() async {
-//     final imagePicker = ImagePicker();
-//     final pickedImage =
-//         await imagePicker.pickImage(source: ImageSource.gallery);
-//     if (pickedImage != null) {
-//       setState(() {
-//         _imageFile = File(pickedImage.path);
-//       });
-//     }
-//   }
+  Future<void> _pickImage() async {
+    final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      Provider.of<ImageProviderModel>(context, listen: false).setImageFile(
+          pickedImage); // Update the selected image using provider
+    }
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final imageProviderModel = Provider.of<ImageProviderModel>(context);
-//     final _imageFile = imageProviderModel.imageFile;
+  @override
+  Widget build(BuildContext context) {
+    final imageProviderModel = Provider.of<ImageProviderModel>(context);
+    final _imageFile = imageProviderModel.imageFile;
 
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Image Picker'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             if (_imageFile != null)
-//               Image.file(
-//                 _imageFile!,
-//                 height: 200,
-//               ),
-//             ElevatedButton(
-//               onPressed: _pickImage,
-//               child: const Text('Select Image'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Take a Picture'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: _imageFile != null
+                ? kIsWeb
+                    ? Image.network(
+                        _imageFile.path,
+                        height: 300.0,
+                        width: 300.0,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.file(
+                        File(_imageFile.path),
+                        height: 300.0,
+                        width: 300.0,
+                        fit: BoxFit.cover,
+                      )
+                : Center(
+                    child: Text('No Image'),
+                  ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await _pickImage();
+            },
+            child: Text('Pick Image'),
+          ),
+        ],
+      ),
+    );
+  }
+}

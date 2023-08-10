@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'components/group_icon_provider.dart';
 import 'components/image_provider_modal.dart';
 import 'firebase_options.dart'; // Ensure you have this file with Firebase options
 import 'screens/welcome_screen.dart';
@@ -36,6 +37,7 @@ class PartyChat extends StatelessWidget {
           ChangeNotifierProvider<ImageProviderModel>(
             create: (context) => ImageProviderModel(),
           ),
+          ChangeNotifierProvider(create: (context) => GroupIconsProvider()),
         ],
         builder: (context, _) {
           return MaterialApp(

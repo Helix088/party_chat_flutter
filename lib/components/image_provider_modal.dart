@@ -6,6 +6,8 @@ class ImageProviderModel extends ChangeNotifier {
 
   XFile? get imageFile => _imageFile;
 
+  get imageUrl => null;
+
   void setImageFile(XFile? imageFile) {
     _imageFile = imageFile;
     notifyListeners();

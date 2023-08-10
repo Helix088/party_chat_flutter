@@ -85,6 +85,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget groupImage() {
     final imageProviderModel = Provider.of<ImageProviderModel>(context);
     final _imageFile = imageProviderModel.imageFile;
+    final _imageUrl =
+        imageProviderModel.imageUrl; // Get the image URL from the provider
 
     return Center(
       child: Stack(
@@ -103,10 +105,18 @@ class _ChatScreenState extends State<ChatScreen> {
                       width: 80.0,
                       fit: BoxFit.cover,
                     )
-              : CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: AssetImage("assets/images/pikachu.jpg"),
-                ),
+              : _imageUrl !=
+                      null // Use the image URL from the provider if available
+                  ? Image.network(
+                      _imageUrl,
+                      height: 80.0,
+                      width: 80.0,
+                      fit: BoxFit.cover,
+                    )
+                  : CircleAvatar(
+                      radius: 40.0,
+                      backgroundImage: AssetImage("assets/images/pikachu.jpg"),
+                    ),
           Positioned(
             bottom: 10.0,
             right: 10.0,
